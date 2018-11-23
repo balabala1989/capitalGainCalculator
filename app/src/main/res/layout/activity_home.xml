@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <!-- view for AdMob Banner Ad -->
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/homepage_banner_ad_unit_id" />
+
+    <ImageView
+        android:id="@+id/mutualFundsImageView"
+        android:layout_width="107dp"
+        android:layout_height="107dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="242dp"
+        android:layout_marginLeft="242dp"
+        android:layout_marginTop="98dp"
+        android:contentDescription="Mutual Funds Capital Gain Calculation"
+        ads:srcCompat="@drawable/mutual_fund" />
+
+    <ImageView
+        android:id="@+id/realEstateImageView"
+        android:layout_width="109dp"
+        android:layout_height="109dp"
+        android:layout_alignStart="@+id/headingAssetTextView"
+        android:layout_alignLeft="@+id/headingAssetTextView"
+        android:layout_alignTop="@+id/mutualFundsImageView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="-80dp"
+        android:layout_marginLeft="-80dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="241dp"
+        android:layout_marginRight="241dp"
+        android:contentDescription="House or Property Capital Gain Calculation"
+        ads:srcCompat="@drawable/real_estate" />
+
+    <TextView
+        android:id="@+id/mutualFundsTextView"
+        android:layout_width="138dp"
+        android:layout_height="31dp"
+        android:layout_above="@+id/adView"
+        android:layout_below="@+id/mutualFundsImageView"
+        android:layout_alignEnd="@+id/mutualFundsImageView"
+        android:layout_alignRight="@+id/mutualFundsImageView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="240dp"
+        android:layout_marginLeft="240dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="-29dp"
+        android:layout_marginRight="-29dp"
+        android:layout_marginBottom="306dp"
+        android:text="@string/mutual_funds_textview"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        ads:fontFamily="@font/enriqueta" />
+
+    <TextView
+        android:id="@+id/realEstateTextView"
+        android:layout_width="166dp"
+        android:layout_height="34dp"
+        android:layout_above="@+id/adView"
+        android:layout_alignStart="@+id/realEstateImageView"
+        android:layout_alignLeft="@+id/realEstateImageView"
+        android:layout_alignTop="@+id/mutualFundsTextView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="-12dp"
+        android:layout_marginLeft="-12dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="209dp"
+        android:layout_marginRight="209dp"
+        android:layout_marginBottom="303dp"
+        android:text="@string/real_estate_textview"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        ads:fontFamily="@font/enriqueta" />
+
+    <TextView
+        android:id="@+id/headingAssetTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/heading_textview"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="24sp"
+        ads:fontFamily="@font/copse" />
+
+    <ImageView
+        android:id="@+id/stocksImageView"
+        android:layout_width="107dp"
+        android:layout_height="107dp"
+        android:layout_below="@+id/realEstateImageView"
+        android:layout_alignStart="@+id/realEstateTextView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="114dp"
+        android:layout_marginBottom="171dp"
+        android:contentDescription="Stocks Capital Gain Calculation"
+        ads:srcCompat="@drawable/stocks" />
+
+    <TextView
+        android:layout_width="74dp"
+        android:layout_height="31dp"
+        android:layout_above="@+id/adView"
+        android:layout_alignTop="@+id/stocksImageView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="69dp"
+        android:layout_marginLeft="69dp"
+        android:layout_marginTop="119dp"
+        android:layout_marginEnd="269dp"
+        android:layout_marginRight="269dp"
+        android:layout_marginBottom="81dp"
+        android:text="@string/stocks_textview"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        ads:fontFamily="@font/enriqueta" />
+
+    <ImageView
+        android:id="@+id/goldImageView"
+        android:layout_width="107dp"
+        android:layout_height="107dp"
+        android:layout_alignTop="@+id/stocksImageView"
+        android:layout_alignEnd="@+id/headingAssetTextView"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-67dp"
+        android:layout_toEndOf="@+id/stocksImageView"
+        android:layout_toRightOf="@+id/stocksImageView"
+        android:contentDescription="Gold FMP Capital Gain Calculation"
+        ads:srcCompat="@drawable/gold" />
+
+    <TextView
+        android:layout_width="112dp"
+        android:layout_height="33dp"
+        android:layout_above="@+id/adView"
+        android:layout_alignTop="@+id/goldImageView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="250dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="117dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="81dp"
+        android:text="@string/gold_fmp_textview"
+        android:textColor="@color/colorAccent"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        ads:fontFamily="@font/enriqueta" />
+
+</RelativeLayout>

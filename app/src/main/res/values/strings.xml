@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Capital Gain Calculator</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- HomePage Activity Strings-->
+    <string name="mutual_funds_textview">Mutual Funds</string>
+    <string name="real_estate_textview">House/Property</string>
+    <string name="stocks_textview">Stocks</string>
+    <string name="gold_fmp_textview">Gold/FMP</string>
+    <string name="heading_textview">Types of Asset</string>
+    <string name="homepage_banner_ad_unit_id">ca-app-pub-3751256909955752/5788087576</string>
+
+    <!-- House or Property calculation Activity Strings-->
+    <string name="title_activity_house_property_calc">House/Property Calculation</string>
+    <string name="house_property_calcpage_banner_ad_unit_id">ca-app-pub-3751256909955752/7616653496</string>
+    <string name="sale_year_textview">Sale Year</string>
+
+
+</resources>

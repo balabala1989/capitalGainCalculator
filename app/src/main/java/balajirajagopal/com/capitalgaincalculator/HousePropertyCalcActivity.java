@@ -6,22 +6,16 @@ import com.google.android.gms.ads.AdView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 public class HousePropertyCalcActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private static String[] spinnerValue;
+
     private static Intent intent;
-    public static final String SALEYEAR = "SALEYEAR";
+    public static final String HOUSE_PROPERTY_SALEYEAR = "HOUSE_PROPERTY_SALEYEAR";
+    private static final int HIDDEN_ITEM_INDEX = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,28 +28,10 @@ public class HousePropertyCalcActivity extends AppCompatActivity implements Adap
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
-        /* Populate the Sale Year value
-         * In India Financial year is from Apr to Mar.
-         * So if the app is opened before March make year as Current Year -1 and Currenct Year otherwise
-         * make the year as current year and current year + 1
-        */
-        String saleYearSpinnerValue = "";
-        Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH);
-        int year = cal.get(Calendar.YEAR);
-
         intent = getIntent();
 
-        if(month > 2)
-            saleYearSpinnerValue = String.valueOf(year) + "-" + String.valueOf(year + 1);
-        else
-            saleYearSpinnerValue = String.valueOf(year - 1) + "-" + String.valueOf(year);
-
-        spinnerValue = new  String[1];
-        spinnerValue[0] = saleYearSpinnerValue;
-
         Spinner spinner = (Spinner) findViewById(R.id.saleYearSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(HousePropertyCalcActivity.this, R.layout.support_simple_spinner_dropdown_item,spinnerValue);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(HousePropertyCalcActivity.this, R.layout.support_simple_spinner_dropdown_item,CapitalGainCalculatorUtils.calculateSaleYear(),HIDDEN_ITEM_INDEX);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -63,17 +39,7 @@ public class HousePropertyCalcActivity extends AppCompatActivity implements Adap
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedString = "";
-        switch (position)
-        {
-            case 0:
-                selectedString = (String) parent.getItemAtPosition(position);
-                break;
-            default:
-
-        }
-
-        intent.putExtra(SALEYEAR,selectedString);
+        intent.putExtra(HOUSE_PROPERTY_SALEYEAR,(String) parent.getItemAtPosition(position));
     }
 
     @Override

@@ -5,7 +5,7 @@
     <!-- HomePage Activity Strings-->
     <string name="mutual_funds_textview">Mutual Funds</string>
     <string name="real_estate_textview">House/Property</string>
-    <string name="stocks_textview">Stocks</string>
+    <string name="stocks_textview">Shares/Stocks</string>
     <string name="gold_fmp_textview">Gold/FMP</string>
     <string name="heading_textview">Types of Asset</string>
     <string name="homepage_banner_ad_unit_id">ca-app-pub-3751256909955752/5788087576</string>
@@ -14,6 +14,49 @@
     <string name="title_activity_house_property_calc">House/Property Calculation</string>
     <string name="house_property_calcpage_banner_ad_unit_id">ca-app-pub-3751256909955752/7616653496</string>
     <string name="sale_year_textview">Sale Year</string>
+    <string name="sale_amount_textview">Sale Price</string>
+    <string name="other_amount_textview">Other Expenses</string>
+
+    <!-- Mutual Funds calculation Activity Strings-->
+    <string name="title_activity_mutual_funds_calc">Mutual Funds Calculation</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3751256909955752/2723080155</string>
+    <string name="debt_mutual_fund_radio_button">Debt</string>
+    <string name="equity_mutual_fund_radio_button">Equity</string>
+    <string name="type_textview">Type</string>
+    <string name="number_of_unit_textview">Number of Units</string>
+    <string name="purchase_year_textview">Purchase Year</string>
+    <string name="purchase_amount_textview">Purchase Price</string>
+    <string name="submit_button">Calculate</string>
+    <string name="purchase_expense_textview">Purchase Expense</string>
+    <string name="sale_expense_textview">Sale Expense</string>
+
+
+
+    <!-- Mutual Funds calculation Report Strings-->
+    <string name="title_activity_mutual_funds_report">Mutual Funds Calculation Report</string>
+    <string name="mutual_funds_report_banner_ad_unit_id">ca-app-pub-3751256909955752/2723080155</string>
+    <string name="assetdetails_header_textview">Asset Details</string>
+    <string name="assettype_tablerow_textview">Asset Type</string>
+    <string name="debt_mutualfund_assettype_textview">Debt Mutual Fund</string>
+    <string name="equity_mutualfund_assettype_textview">Equity Mutual Fund</string>
+    <string name="numberofunits_tablerow_textview">Number of Units</string>
+    <string name="purchasedetails_header_textview">Purchase Details</string>
+    <string name="purchaseyear_tablerow_textview">Purchase Year</string>
+    <string name="purchaseprice_perunit_tablerow_textview">Purchase Price per Unit</string>
+    <string name="purchaseprice_costofunit_tablerow_textview">Purchase Cost of Units</string>
+    <string name="purchaseexpense_tablerow_textview">Purchase Expense</string>
+    <string name="purchaseprice_total_tablerow_textview">Total Purchase Price</string>
+    <string name="saledetails_header_textview">Sale Details</string>
+    <string name="saleyear_tablerow_textview">Sale Year</string>
+    <string name="saleprice_perunit_tablerow_textview">Sale Price per Unit</string>
+    <string name="saleprice_costofunit_tablerow_textview">Sale Cost of Units</string>
+    <string name="saleeexpense_tablerow_textview">Sale Expense</string>
+    <string name="saleprice_total_tablerow_textview">Total Sale Price</string>
+    <string name="capitalgaindetails_header_textview">Capital Gain Details</string>
+
+
+    <!-- Common Strings -->
+    <string name="expense_hint_editText">Brokerage/Commission</string>
 
 
 </resources>

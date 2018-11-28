@@ -1,52 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HousePropertyCalcActivity">
+    tools:context=".HousePropertyCalcActivity"
+    android:id="@+id/relativeLayout">
 
     <!-- view for AdMob Banner Ad -->
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/house_property_calcpage_banner_ad_unit_id" />
+        ads:adUnitId="@string/house_property_calcpage_banner_ad_unit_id"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/saleYearSpinner"
         android:layout_width="332dp"
         android:layout_height="38dp"
-        android:layout_above="@+id/adView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginBottom="458dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:prompt="@string/sale_year_textview"
         android:spinnerMode="dialog"
-        android:prompt="@string/sale_year_textview"/>
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/saleYearTextView" />
 
     <TextView
         android:id="@+id/saleYearTextView"
-        android:layout_width="76dp"
-        android:layout_height="82dp"
-        android:layout_above="@+id/saleYearSpinner"
-        android:layout_alignStart="@+id/saleYearSpinner"
-        android:layout_alignEnd="@+id/saleYearSpinner"
-        android:layout_alignRight="@+id/saleYearSpinner"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="254dp"
-        android:layout_marginRight="254dp"
-        android:layout_marginBottom="-54dp"
+        android:layout_width="82dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="@string/sale_year_textview"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         android:textStyle="bold"
-        ads:fontFamily="@font/enriqueta" />
+        ads:fontFamily="@font/enriqueta"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.102"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/saleAmountEditText"
+        android:layout_width="330dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="Example:300000"
+        android:inputType="numberDecimal"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/saleAmountTextView"
+        tools:text="Example:300000" />
+
+    <TextView
+        android:id="@+id/saleAmountTextView"
+        android:layout_width="108dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/sale_amount_textview"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        ads:fontFamily="@font/enriqueta"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.104"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/saleYearSpinner" />
+
+    <EditText
+        android:id="@+id/otherAmountEditText"
+        android:layout_width="331dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="Brokerage/Commission"
+        android:inputType="numberDecimal"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.468"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/otherAmountTextView"
+        tools:text="Brokerage/Commission" />
+
+    <TextView
+        android:id="@+id/otherAmountTextView"
+        android:layout_width="122dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/other_amount_textview"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        ads:fontFamily="@font/enriqueta"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.109"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/saleAmountEditText" />
+
+</android.support.constraint.ConstraintLayout>

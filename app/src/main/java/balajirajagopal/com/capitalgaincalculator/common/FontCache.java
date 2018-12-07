@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.common;
 
 import android.content.Context;
 import android.graphics.Typeface;

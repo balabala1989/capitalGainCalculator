@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.utils;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +22,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import balajirajagopal.com.capitalgaincalculator.common.FontCache;
+import balajirajagopal.com.capitalgaincalculator.common.IndexationCache;
+import balajirajagopal.com.capitalgaincalculator.R;
 
 public class CapitalGainCalculatorUtils {
 

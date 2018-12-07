@@ -22,25 +22,25 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <activity
-            android:name=".HousePropertyCalcActivity"
+            android:name=".activity.HousePropertyCalcActivity"
             android:label="@string/title_activity_house_property_calc"
-            android:parentActivityName=".CalculatorHomeActivity"
+            android:parentActivityName=".activity.CalculatorHomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="balajirajagopal.com.capitalgaincalculator.CalculatorHomeActivity" />
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
         </activity>
         <activity
-            android:name=".MutualFundsCalcActivity"
+            android:name=".activity.MutualFundsCalcActivity"
             android:label="@string/title_activity_mutual_funds_calc"
-            android:parentActivityName=".CalculatorHomeActivity"
+            android:parentActivityName=".activity.CalculatorHomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="balajirajagopal.com.capitalgaincalculator.CalculatorHomeActivity" />
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
         </activity>
         <activity
-            android:name=".CalculatorHomeActivity"
+            android:name=".activity.CalculatorHomeActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -50,13 +50,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MutualFundReport"
+        <activity android:name=".activity.MutualFundReport"
             android:configChanges="orientation"
             android:label="@string/title_activity_mutual_funds_report"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="balajirajagopal.com.capitalgaincalculator.CalculatorHomeActivity" />
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
         </activity>
 
     </application>

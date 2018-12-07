@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.custom;
 
 import android.content.Context;
 import android.view.View;

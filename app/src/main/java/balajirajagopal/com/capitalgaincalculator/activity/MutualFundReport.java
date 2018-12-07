@@ -1,26 +1,16 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
+import balajirajagopal.com.capitalgaincalculator.enums.GAINTYPE;
+import balajirajagopal.com.capitalgaincalculator.R;
 
 public class MutualFundReport extends AppCompatActivity {
 

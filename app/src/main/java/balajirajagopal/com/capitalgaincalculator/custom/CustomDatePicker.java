@@ -1,14 +1,16 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.custom;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import balajirajagopal.com.capitalgaincalculator.enums.DATETYPE;
+import balajirajagopal.com.capitalgaincalculator.activity.MutualFundsCalcActivity;
 
 public class CustomDatePicker implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 

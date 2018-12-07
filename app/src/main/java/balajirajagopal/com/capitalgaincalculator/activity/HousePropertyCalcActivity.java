@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.activity;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -9,6 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+
+import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
+import balajirajagopal.com.capitalgaincalculator.custom.CustomSpinnerAdapter;
+import balajirajagopal.com.capitalgaincalculator.R;
 
 public class HousePropertyCalcActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.enums;
 
 public enum DATETYPE {
     PURCHASE_DATE,

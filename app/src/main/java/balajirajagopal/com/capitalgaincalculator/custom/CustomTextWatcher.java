@@ -1,16 +1,12 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.custom;
 
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
+import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
+import balajirajagopal.com.capitalgaincalculator.activity.MutualFundsCalcActivity;
 
 public class CustomTextWatcher implements TextWatcher {
     EditText editText;

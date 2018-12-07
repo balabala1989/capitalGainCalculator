@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.activity;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -9,17 +9,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.KeyListener;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
+import balajirajagopal.com.capitalgaincalculator.custom.CustomDatePicker;
+import balajirajagopal.com.capitalgaincalculator.custom.CustomTextWatcher;
+import balajirajagopal.com.capitalgaincalculator.enums.DATETYPE;
+import balajirajagopal.com.capitalgaincalculator.R;
 
 public class MutualFundsCalcActivity extends AppCompatActivity {
 

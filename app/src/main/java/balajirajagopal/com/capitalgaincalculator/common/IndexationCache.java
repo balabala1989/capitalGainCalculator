@@ -1,4 +1,4 @@
-package balajirajagopal.com.capitalgaincalculator;
+package balajirajagopal.com.capitalgaincalculator.common;
 
 import android.content.Context;
 
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+
+import balajirajagopal.com.capitalgaincalculator.R;
 
 public final class IndexationCache {
 

@@ -37,7 +37,8 @@
                 ads:layout_constraintBottom_toBottomOf="parent"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/mutualFundCalcButton" />
+                ads:layout_constraintTop_toBottomOf="@+id/mutualFundCalcButton"
+                ads:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/typeTextView"
@@ -61,14 +62,13 @@
                 android:id="@+id/numberOfUnitEditText"
                 android:layout_width="370dp"
                 android:layout_height="46dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:ems="10"
                 android:hint="Example: 10"
                 android:inputType="numberSigned"
+                android:maxLength="15"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.5"
                 ads:layout_constraintStart_toStartOf="parent"
@@ -147,22 +147,6 @@
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/numberOfUnitEditText" />
 
-            <Spinner
-                android:id="@+id/purchaseYearSpinner"
-                android:layout_width="373dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:spinnerMode="dialog"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintHorizontal_bias="0.0"
-                ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/purchaseYearTextView"
-                android:prompt="@string/purchase_year_textview"/>
-
             <TextView
                 android:id="@+id/purchaseAmountTextView"
                 android:layout_width="wrap_content"
@@ -179,7 +163,7 @@
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.0"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/purchaseYearSpinner" />
+                ads:layout_constraintTop_toBottomOf="@+id/purchaseDateEditText" />
 
             <EditText
                 android:id="@+id/purchaseAmountEditText"
@@ -191,8 +175,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:ems="10"
-                android:hint="Example: 20000"
+                android:hint="Example: 20000 per unit"
                 android:inputType="numberDecimal"
+                android:maxLength="15"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.0"
                 ads:layout_constraintStart_toStartOf="parent"
@@ -216,22 +201,6 @@
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/purchaseExpenseEditText" />
 
-            <Spinner
-                android:id="@+id/saleYearSpinner"
-                android:layout_width="372dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:spinnerMode="dialog"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintHorizontal_bias="0.0"
-                ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/saleYarTextView"
-                android:prompt="@string/sale_year_textview"/>
-
             <TextView
                 android:id="@+id/salePriceTextView"
                 android:layout_width="wrap_content"
@@ -247,7 +216,7 @@
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.0"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/saleYearSpinner" />
+                ads:layout_constraintTop_toBottomOf="@+id/saleDateEditText" />
 
             <EditText
                 android:id="@+id/salePriceEditText"
@@ -259,8 +228,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:ems="10"
-                android:hint="Example:50000"
+                android:hint="Example:50000 per unit"
                 android:inputType="numberDecimal"
+                android:maxLength="15"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.0"
                 ads:layout_constraintStart_toStartOf="parent"
@@ -273,7 +243,7 @@
                 android:layout_height="49dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/mybutton"
@@ -283,9 +253,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintHorizontal_bias="0.481"
+                ads:layout_constraintHorizontal_bias="0.502"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toBottomOf="@+id/saleExpenseEditText" />
+                ads:layout_constraintTop_toBottomOf="@+id/fairMarketPriceEditText" />
 
             <TextView
                 android:id="@+id/purchaseExpenseTextView"
@@ -314,6 +284,8 @@
                 android:ems="10"
                 android:hint="@string/expense_hint_editText"
                 android:inputType="numberDecimal"
+                android:maxLength="15"
+                android:minHeight="15dp"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintHorizontal_bias="0.0"
                 ads:layout_constraintStart_toStartOf="parent"
@@ -348,9 +320,82 @@
                 android:ems="10"
                 android:hint="@string/expense_hint_editText"
                 android:inputType="numberDecimal"
+                android:maxLength="15"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintTop_toBottomOf="@+id/saleExpenseTextView" />
+
+            <EditText
+                android:id="@+id/purchaseDateEditText"
+                android:layout_width="370dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                android:editable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="Choose the purchase date"
+                android:inputType="date"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/purchaseYearTextView" />
+
+            <EditText
+                android:id="@+id/saleDateEditText"
+                android:layout_width="370dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                android:editable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="Choose the sale date"
+                android:inputType="date"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/saleYarTextView" />
+
+            <TextView
+                android:id="@+id/fairMarketValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/fair_market_share_value_textview"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.0"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/saleExpenseEditText" />
+
+            <EditText
+                android:id="@+id/fairMarketPriceEditText"
+                android:layout_width="370dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:editable="true"
+                android:ems="10"
+                android:hint="Example:30000 per unit"
+                android:inputType="numberDecimal"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/fairMarketValueTextView" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

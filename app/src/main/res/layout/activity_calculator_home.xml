@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalculatorHomeActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:scrollbars="none"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/headingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/heading_textview"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="24sp"
+                ads:fontFamily="@font/copse"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.498"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toTopOf="parent"
+                ads:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/housePropertyImageView"
+                android:layout_width="117dp"
+                android:layout_height="117dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginLeft="44dp"
+                android:layout_marginTop="72dp"
+                android:contentDescription="House Property Gain Calculation"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/headingTextView"
+                ads:srcCompat="@drawable/real_estate" />
+
+            <TextView
+                android:id="@+id/housePropertyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/real_estate_textview"
+                android:textColor="@color/colorAccent"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                ads:fontFamily="@font/enriqueta"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/housePropertyImageView" />
+
+            <ImageView
+                android:id="@+id/mutualFundImageView"
+                android:layout_width="117dp"
+                android:layout_height="117dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="72dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:contentDescription="Mutual Funds Gain Calculation"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.555"
+                ads:layout_constraintStart_toEndOf="@+id/housePropertyImageView"
+                ads:layout_constraintTop_toBottomOf="@+id/headingTextView"
+                ads:srcCompat="@drawable/mutual_fund" />
+
+            <TextView
+                android:id="@+id/mutualFundTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/mutual_funds_textview"
+                android:textColor="@color/colorAccent"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                ads:fontFamily="@font/enriqueta"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.25"
+                ads:layout_constraintStart_toEndOf="@+id/housePropertyTextView"
+                ads:layout_constraintTop_toBottomOf="@+id/mutualFundImageView" />
+
+            <ImageView
+                android:id="@+id/stocksImageView"
+                android:layout_width="117dp"
+                android:layout_height="117dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginLeft="44dp"
+                android:layout_marginTop="60dp"
+                android:contentDescription="Stocks Gain Calculation"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/housePropertyTextView"
+                ads:srcCompat="@drawable/stocks" />
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/calcHomeAdView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/homepage_banner_ad_unit_id"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.491"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/goldTextView" />
+
+            <TextView
+                android:id="@+id/stocksTextView"
+                android:layout_width="131dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/stocks_textview"
+                android:textColor="@color/colorAccent"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                ads:fontFamily="@font/enriqueta"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintTop_toBottomOf="@+id/stocksImageView" />
+
+            <ImageView
+                android:id="@+id/goldImageView"
+                android:layout_width="117dp"
+                android:layout_height="117dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.555"
+                ads:layout_constraintStart_toEndOf="@+id/stocksImageView"
+                ads:layout_constraintTop_toBottomOf="@+id/mutualFundTextView"
+                ads:srcCompat="@drawable/gold" />
+
+            <TextView
+                android:id="@+id/goldTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/gold_fmp_textview"
+                android:textColor="@color/colorAccent"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                ads:fontFamily="@font/enriqueta"
+                ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintStart_toEndOf="@+id/stocksTextView"
+                ads:layout_constraintTop_toBottomOf="@+id/goldImageView" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

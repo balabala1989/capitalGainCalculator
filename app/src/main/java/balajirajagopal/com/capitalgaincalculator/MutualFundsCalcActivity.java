@@ -3,13 +3,11 @@ package balajirajagopal.com.capitalgaincalculator;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.method.KeyListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,9 +15,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
-public class MutualFundsCalcActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class MutualFundsCalcActivity extends AppCompatActivity {
 
     public static final String MUTUAL_FUND_TYPE = "MUTUAL_FUND_TYPE";
     public static final String DEBT_MUTUAL_FUND = "D";
@@ -33,10 +35,16 @@ public class MutualFundsCalcActivity extends AppCompatActivity implements Adapte
     public static final String MUTUAL_FUNDS_NUMBEROFUNITS = "MUTUAL_FUND_NUMBEROFUNITS";
     public static final String MUTUAL_FUNDS_SALEEXPENSE = "MUTUAL_FUND_SALEEXPENSE";
     public static final String MUTUAL_FUNDS_PURCHASEEXPENSE = "MUTUAL_FUND_PURCHASEEXPENSE";
+    public static final String MUTUAL_FUNDS_FAIRMARKETVALUE = "MUTUAL_FUND_FAIRMARKET";
+    public static final String MUTUAL_FUNDS_FAIRMARKET_HEADERMESSAGE = "MUTUAL_FUNDS_FAIRMARKET_HEADERMESSAGE";
 
+    private static KeyListener fairMarketValueEditTextKeyListener;
+    private static CustomTextWatcher fairMarketValueEditTexTexWatcher;
     public static final String EMPTY_STRING = "";
+    private static CapitalGainCalculatorUtils utils;
 
     private static final int HIDDEN_ITEM_INDEX = 0;
+    private static boolean fairMarketValueEditTextRequired = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +56,12 @@ public class MutualFundsCalcActivity extends AppCompatActivity implements Adapte
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
+        utils = new CapitalGainCalculatorUtils();
+
         intent = new Intent(this,MutualFundReport.class);
         initialize();
         addRadioGroupAction();
-        loadSpinnerValues();
+        setDatePickers();
         addButtonActions();
         addWatcherToEditText();
 
@@ -99,19 +109,11 @@ public class MutualFundsCalcActivity extends AppCompatActivity implements Adapte
        });
    }
 
-   private void loadSpinnerValues(){
+   private void setDatePickers(){
 
-       Spinner saleYearSpinner = (Spinner) findViewById(R.id.saleYearSpinner);
-       CustomSpinnerAdapter saleYearAdapter = new CustomSpinnerAdapter(MutualFundsCalcActivity.this, R.layout.support_simple_spinner_dropdown_item,CapitalGainCalculatorUtils.calculateSaleYear(),HIDDEN_ITEM_INDEX);
-       saleYearAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-       saleYearSpinner.setAdapter(saleYearAdapter);
-       saleYearSpinner.setOnItemSelectedListener(this);
+       new CustomDatePicker(this,R.id.purchaseDateEditText, DATETYPE.PURCHASE_DATE);
+       new CustomDatePicker(this,R.id.saleDateEditText, DATETYPE.SALE_DATE);
 
-       Spinner purchaseYearSpinner = (Spinner) findViewById(R.id.purchaseYearSpinner);
-       CustomSpinnerAdapter purchaseYearAdapter = new CustomSpinnerAdapter(MutualFundsCalcActivity.this, R.layout.support_simple_spinner_dropdown_item,CapitalGainCalculatorUtils.caluclatePurchaseYears(),HIDDEN_ITEM_INDEX);
-       purchaseYearAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-       purchaseYearSpinner.setAdapter(purchaseYearAdapter);
-       purchaseYearSpinner.setOnItemSelectedListener(this);
    }
 
    private void initialize()
@@ -136,28 +138,19 @@ public class MutualFundsCalcActivity extends AppCompatActivity implements Adapte
                 intent.putExtra(MUTUAL_FUNDS_PURCHASEEXPENSE, ((EditText) findViewById(R.id.purchaseExpenseEditText)).getText().toString());
                 intent.putExtra(MUTUAL_FUNDS_SALEEXPENSE, ((EditText) findViewById(R.id.saleExpenseEditText)).getText().toString());
                 intent.putExtra(MUTUAL_FUNDS_NUMBEROFUNITS, ((EditText) findViewById(R.id.numberOfUnitEditText)).getText().toString());
+                intent.putExtra(MUTUAL_FUND_PURCHASEYEAR,((EditText) findViewById(R.id.purchaseDateEditText)).getText().toString());
+                intent.putExtra(MUTUAL_FUND_SALEYEAR,((EditText) findViewById(R.id.saleDateEditText)).getText().toString());
+                intent.putExtra(MUTUAL_FUNDS_FAIRMARKETVALUE, ((EditText) findViewById(R.id.fairMarketPriceEditText)).getText().toString());
+                intent.putExtra(MUTUAL_FUNDS_FAIRMARKET_HEADERMESSAGE,((TextView) findViewById(R.id.fairMarketValueTextView)).getText().toString());
                 startActivity(intent);
            }
        });
        calculateButton.setEnabled(false);
    }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-       if(parent.getId() == R.id.purchaseYearSpinner)
-           intent.putExtra(MUTUAL_FUND_PURCHASEYEAR,(String)parent.getItemAtPosition(position));
-       if(parent.getId() == R.id.saleYearSpinner)
-           intent.putExtra(MUTUAL_FUND_SALEYEAR, (String)parent.getItemAtPosition(position));
-       checkButtonCanBeEnabled();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
     public void checkButtonCanBeEnabled(){
        boolean radioButtonChecked = false;
+
        Button calculateButton = (Button) findViewById(R.id.mutualFundCalcButton);
        RadioButton debtRadioButton = (RadioButton) findViewById(R.id.debtMutualFund);
        RadioButton equityRadioButton = (RadioButton) findViewById(R.id.equityMutualFund);
@@ -166,22 +159,26 @@ public class MutualFundsCalcActivity extends AppCompatActivity implements Adapte
        if(equityRadioButton.isChecked())
            radioButtonChecked = true;
 
-       Spinner purchaseYearSpinner = (Spinner) findViewById(R.id.purchaseYearSpinner);
-       Spinner saleYearSpinner = (Spinner) findViewById(R.id.saleYearSpinner);
        EditText numberOfUnitsEditText = (EditText) findViewById(R.id.numberOfUnitEditText);
        EditText purchasePriceEditText = (EditText) findViewById(R.id.purchaseAmountEditText);
        EditText purchaseExpenseEditText = (EditText) findViewById(R.id.purchaseExpenseEditText);
        EditText salePriceEditText = (EditText) findViewById(R.id.salePriceEditText);
        EditText saleExpenseEditText = (EditText) findViewById(R.id.saleExpenseEditText);
+       EditText purchaseYearEditText = (EditText) findViewById(R.id.purchaseDateEditText);
+       EditText saleYearEditText = (EditText) findViewById(R.id.saleDateEditText);
+       EditText fairMarketValueEditText = (EditText) findViewById(R.id.fairMarketPriceEditText);
+
+       if(purchaseYearEditText.getText().toString().length() > 0){
+           enableFairMarketValueEditText(purchaseYearEditText.getText().toString());
+       }
 
        if(!radioButtonChecked ||
-               purchaseYearSpinner.getSelectedItemPosition() == 0 ||
-               saleYearSpinner.getSelectedItemPosition() == 0 ||
                numberOfUnitsEditText.getText().toString().length() == 0 ||
                purchasePriceEditText.getText().toString().length() == 0 ||
-               purchaseExpenseEditText.getText().toString().length() == 0 ||
+               purchaseYearEditText.getText().toString().length() == 0 ||
+               saleYearEditText.getText().toString().length() == 0 ||
                salePriceEditText.getText().toString().length() == 0 ||
-               saleExpenseEditText.getText().toString().length() == 0){
+               (fairMarketValueEditTextRequired && fairMarketValueEditText.getText().toString().length() == 0)){
            calculateButton.setEnabled(false);
            return;
        }
@@ -195,29 +192,70 @@ public class MutualFundsCalcActivity extends AppCompatActivity implements Adapte
        EditText purchaseExpenseEditText = (EditText) findViewById(R.id.purchaseExpenseEditText);
        EditText salePriceEditText = (EditText) findViewById(R.id.salePriceEditText);
        EditText saleExpenseEditText = (EditText) findViewById(R.id.saleExpenseEditText);
+       EditText fairMarketValueEditText = (EditText) findViewById(R.id.fairMarketPriceEditText);
+       EditText purchaseYearEditText = (EditText) findViewById(R.id.purchaseDateEditText);
+       EditText saleYearEditText = (EditText) findViewById(R.id.saleDateEditText);
 
-       numberOfUnitsEditText.addTextChangedListener(watcher);
-       purchasePriceEditText.addTextChangedListener(watcher);
-       purchaseExpenseEditText.addTextChangedListener(watcher);
-       salePriceEditText.addTextChangedListener(watcher);
-       saleExpenseEditText.addTextChangedListener(watcher);
+       numberOfUnitsEditText.addTextChangedListener(new CustomTextWatcher(numberOfUnitsEditText,this));
+       purchasePriceEditText.addTextChangedListener(new CustomTextWatcher(purchasePriceEditText,this));
+       purchaseExpenseEditText.addTextChangedListener(new CustomTextWatcher(purchaseExpenseEditText,this));
+       salePriceEditText.addTextChangedListener(new CustomTextWatcher(salePriceEditText,this));
+       saleExpenseEditText.addTextChangedListener(new CustomTextWatcher(saleExpenseEditText,this));
+       fairMarketValueEditTextKeyListener = fairMarketValueEditText.getKeyListener();
+       fairMarketValueEditTexTexWatcher = new CustomTextWatcher(fairMarketValueEditText,this);
+       fairMarketValueEditText.setKeyListener(null);
+       fairMarketValueEditText.addTextChangedListener(fairMarketValueEditTexTexWatcher);
     }
 
-    private final TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void enableFairMarketValueEditText(String purchaseDate){
+        RadioButton equityRadioButton = (RadioButton) findViewById(R.id.equityMutualFund);
+        EditText fairMarketValueEditText = (EditText) findViewById(R.id.fairMarketPriceEditText);
+        TextView fairMarketValueTextView = (TextView) findViewById(R.id.fairMarketValueTextView);
+        if(purchaseDate.length() != 0) {
+            if (equityRadioButton.isChecked() && utils.fairMarketPriceRequired(purchaseDate, getString(R.string.mutual_funds_equity_index_date_limit))) {
+                fairMarketValueTextView.setText(getString(R.string.fair_market_share_value_textview) + " " + getString(R.string.fair_market_share_value_equity_textview));
+                fairMarketValueEditText.setKeyListener(fairMarketValueEditTextKeyListener);
+                fairMarketValueEditTextRequired = true;
+            }
+            if(utils.fairMarketPriceRequired(purchaseDate,getString(R.string.index_date_limit))){
+                fairMarketValueTextView.setText(getString(R.string.fair_market_share_value_textview) + " " + getString(R.string.fair_market_share_value_purchasedate_textview));
+                fairMarketValueEditText.setKeyListener(fairMarketValueEditTextKeyListener);
+                fairMarketValueEditTextRequired = true;
+            }
 
         }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        else{
+            fairMarketValueEditText.removeTextChangedListener(fairMarketValueEditTexTexWatcher);
+            fairMarketValueEditText.setText("");
+            fairMarketValueEditText.addTextChangedListener(fairMarketValueEditTexTexWatcher);
+            fairMarketValueEditText.setKeyListener(null);
+            fairMarketValueEditTextRequired = false;
         }
+    }
 
-        @Override
-        public void afterTextChanged(Editable s) {
-            checkButtonCanBeEnabled();
-        }
-    };
+    public DatePickerDialog setMinimumSaleDate(DatePickerDialog dialog){
+       EditText purchaseDateEditText = (EditText) findViewById(R.id.purchaseDateEditText);
+       if(purchaseDateEditText.getText().toString().length() > 0){
+           SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+           Date minimumSaleDate = null;
+           try {
+               minimumSaleDate = format.parse(purchaseDateEditText.getText().toString());
+           } catch (ParseException e) {
+               e.printStackTrace();
+               return dialog;
+           }
+           dialog.getDatePicker().setMinDate(minimumSaleDate.getTime());
+       }
+       return dialog;
+    }
+
+    public void resetSaleDateOnChangeOfPurchaseDate(String purchaseDate){
+       EditText saleDateEditText = (EditText) findViewById(R.id.saleDateEditText);
+       if(saleDateEditText.getText().toString().length() > 0) {
+           if (utils.differenceOfDates(purchaseDate, saleDateEditText.getText().toString()) > 0){
+               saleDateEditText.setText("");
+           }
+       }
+    }
 
 }

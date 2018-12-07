@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detailScroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:scrollbars="none">
 
     <TableLayout
@@ -10,6 +10,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:stretchColumns="*">
-    </TableLayout>
+        android:stretchColumns="*"></TableLayout>
 </ScrollView>

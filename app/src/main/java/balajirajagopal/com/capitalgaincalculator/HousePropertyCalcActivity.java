@@ -16,6 +16,7 @@ public class HousePropertyCalcActivity extends AppCompatActivity implements Adap
     private static Intent intent;
     public static final String HOUSE_PROPERTY_SALEYEAR = "HOUSE_PROPERTY_SALEYEAR";
     private static final int HIDDEN_ITEM_INDEX = 0;
+    private static CapitalGainCalculatorUtils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +29,12 @@ public class HousePropertyCalcActivity extends AppCompatActivity implements Adap
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
+        utils = new CapitalGainCalculatorUtils();
+
         intent = getIntent();
 
         Spinner spinner = (Spinner) findViewById(R.id.saleYearSpinner);
-        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(HousePropertyCalcActivity.this, R.layout.support_simple_spinner_dropdown_item,CapitalGainCalculatorUtils.calculateSaleYear(),HIDDEN_ITEM_INDEX);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(HousePropertyCalcActivity.this, R.layout.support_simple_spinner_dropdown_item,utils.calculateSaleYear(),HIDDEN_ITEM_INDEX);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);

@@ -81,6 +81,8 @@
     <string name="mutual_fund_equity_long_term_percent">10</string>
     <string name="mutual_fund_debt_long_term_percent">20</string>
     <string name="mutual_fund_equity_long_term_amount_limit">100000</string>
+    <string name="purchaseprice_tablerow_textview">Purchase Price</string>
+    <string name="not_applicable">Nil</string>
 
 
 </resources>

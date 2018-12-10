@@ -8,6 +8,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import balajirajagopal.com.capitalgaincalculator.common.ReportGen;
+import balajirajagopal.com.capitalgaincalculator.enums.ASSET_SUBTYPE;
+import balajirajagopal.com.capitalgaincalculator.metadata.CapitalGainCalcDisplayData;
+import balajirajagopal.com.capitalgaincalculator.metadata.CapitalGainCalcInputData;
 import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
 import balajirajagopal.com.capitalgaincalculator.enums.GAINTYPE;
 import balajirajagopal.com.capitalgaincalculator.R;
@@ -26,7 +30,7 @@ public class MutualFundReport extends AppCompatActivity {
     public String MUTUAL_FUNDS_FAIRMARKETVALUE;
     public String MUTUAL_FUNDS_FAIRMARKET_HEADERMESSAGE;
 
-    private int mutualFundResultTableLayoutIndex = 0;
+    private int mutualFundResultTableLayoutIndex = 2;
     private TableLayout mutualFundResultTableLayout;
     private final String NOT_APPLICABLE="Nil";
     private Double totalSaleAmount;
@@ -44,24 +48,39 @@ public class MutualFundReport extends AppCompatActivity {
     private static CapitalGainCalculatorUtils utils;
 
 
+    private CapitalGainCalcInputData capitalGainCalcInputData;
+    private CapitalGainCalcDisplayData capitalGainCalcDisplayData;
+    private ReportGen reportGen;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mutual_fund_report);
 
+
+
         utils = new CapitalGainCalculatorUtils();
 
         intent = getIntent();
-        //Transfer input data from previous activity to this activity
+
+        capitalGainCalcInputData = (CapitalGainCalcInputData) intent.getParcelableExtra(MutualFundsCalcActivity.MUTUAL_FUND_INPUT_DATA);
+        capitalGainCalcDisplayData = new CapitalGainCalcDisplayData();
+        reportGen = new ReportGen(this,capitalGainCalcInputData, capitalGainCalcDisplayData);
+        reportGen.generateReport();
+
+
+
+        /*//Transfer input data from previous activity to this activity
         loadInputData();
 
-        mutualFundResultTableLayout = (TableLayout) findViewById(R.id.mutualFundResultTableLayout);
+        *//*mutualFundResultTableLayout = (TableLayout) findViewById(R.id.mutualFundResultTableLayout);
         mutualFundResultTableLayout.removeAllViews();
         mutualFundResultTableLayout.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.WRAP_CONTENT));
 
         //Load the Asset Details into Table. Data is received as Input from previous Activity
         loadAssetDetails();
-
+          *//*
         //Create dummy space
         mutualFundResultTableLayout.addView(utils.createSpaceBetweenTables(this),mutualFundResultTableLayoutIndex++);
 
@@ -87,9 +106,13 @@ public class MutualFundReport extends AppCompatActivity {
 
         //Load the Capital Gain computed into Table. Data is received as Input from previous Activity
         computeCapitalGain();
+
+        //Create dummy space
+        mutualFundResultTableLayout.addView(utils.createSpaceBetweenTables(this),mutualFundResultTableLayoutIndex++);*/
+
     }
 
-    private void loadAssetDetails(){
+    /*private void loadAssetDetails(){
         int backGroundColorChange = 0;
         //Create the header row
         mutualFundResultTableLayout.addView(utils.createHeaderRow(new TableRow(this), new TextView(this), getString(R.string.assetdetails_header_textview)),mutualFundResultTableLayoutIndex++);
@@ -464,7 +487,7 @@ public class MutualFundReport extends AppCompatActivity {
         MUTUAL_FUNDS_TYPE = intent.getStringExtra(MutualFundsCalcActivity.MUTUAL_FUND_TYPE);
         MUTUAL_FUNDS_FAIRMARKETVALUE = intent.getStringExtra(MutualFundsCalcActivity.MUTUAL_FUNDS_FAIRMARKETVALUE);
         MUTUAL_FUNDS_FAIRMARKET_HEADERMESSAGE = intent.getStringExtra(MutualFundsCalcActivity.MUTUAL_FUNDS_FAIRMARKET_HEADERMESSAGE);
-    }
+    }*/
 
     /*
     * Computes following attributes
@@ -474,107 +497,109 @@ public class MutualFundReport extends AppCompatActivity {
     * Capital Gain Tax amount
     * Net profit
     * */
-    private void calculateGainDetails(){
+    public CapitalGainCalcDisplayData calculateGainDetails(CapitalGainCalcInputData capitalGainCalcInputData, CapitalGainCalcDisplayData capitalGainCalcDisplayData){
         Double taxPercent;
+
         //Debt Mutual Fund
-        if(MutualFundsCalcActivity.DEBT_MUTUAL_FUND.equals(MUTUAL_FUNDS_TYPE)){
-            utils.calculateDifferenceInPurchaseAndSaleDate(MUTUAL_FUND_PURCHASEYEAR,MUTUAL_FUND_SALEYEAR);
+        if(ASSET_SUBTYPE.MUTUAL_FUNDS_DEBT.equals(capitalGainCalcInputData.getAssetSubtype())){
+            utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate());
             //Short term computation
             if(utils.yearDiff < 3){
-                capitalGainAmount = totalSaleAmount - totalPurchaseAmount;
-                gaintype = capitalGainAmount < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN;
-                netProfit = capitalGainAmount;
+                capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - capitalGainCalcDisplayData.getTotalPurchaseAmount());
+                capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN);
+                capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount());
 
-                if(GAINTYPE.SHORT_TERM_GAIN.equals(gaintype)){
-                    gainTypeDisplayValue = getString(R.string.capitalgain_shot_term_gain_textview);
-                    capitalGainAmountTextView = getString(R.string.capitalgain_gain_amount_textview);
+                if(GAINTYPE.SHORT_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_shot_term_gain_textview));
+                    capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_gain_amount_textview));
                 }
                 else{
-                    gainTypeDisplayValue = getString(R.string.capitalgain_shot_term_loss_textview);
-                    capitalGainAmountTextView = getString(R.string.capitalgain_loss_amount_textview);
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_shot_term_loss_textview));
+                    capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_loss_amount_textview));
                 }
-                capitalGainTaxPercentDisplayValue = getString(R.string.capitalgain_tax_info_textview);
-                getCapitalGainTaxAmountDisplayValue = getString(R.string.capitalgain_tax_info_textview);
+                capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.capitalgain_tax_info_textview));
+                capitalGainCalcDisplayData.setGetCapitalGainTaxAmountDisplayValue(getString(R.string.capitalgain_tax_info_textview));
 
             }
             //Long term computation
             else{
-                String purchaseDate = utils.differenceOfDates(MUTUAL_FUND_PURCHASEYEAR,getString(R.string.index_date_limit)) > 0 ? MUTUAL_FUND_PURCHASEYEAR : getString(R.string.index_date_limit);
-                String saleDate = utils.differenceOfDates(MUTUAL_FUND_SALEYEAR,getString(R.string.index_date_limit)) > 0 ? MUTUAL_FUND_SALEYEAR : getString(R.string.index_date_limit);
-                Double indexedPurchaseAmount = totalPurchaseAmount * (utils.getIndexValue(saleDate,this) / utils.getIndexValue(purchaseDate, this));
-                capitalGainAmount = totalSaleAmount - indexedPurchaseAmount;
-                gaintype = capitalGainAmount < 0 ? GAINTYPE.LONG_TERM_LOSS : GAINTYPE.LONG_TERM_GAIN;
-                if(GAINTYPE.LONG_TERM_GAIN.equals(gaintype)){
+                String purchaseDate = utils.differenceOfDates(capitalGainCalcInputData.getPurchaseDate(),getString(R.string.index_date_limit)) > 0 ? capitalGainCalcInputData.getPurchaseDate() : getString(R.string.index_date_limit);
+                String saleDate = utils.differenceOfDates(capitalGainCalcInputData.getSaleDate(),getString(R.string.index_date_limit)) > 0 ? capitalGainCalcInputData.getSaleDate() : getString(R.string.index_date_limit);
+                Double indexedPurchaseAmount = capitalGainCalcDisplayData.getTotalPurchaseAmount() * (utils.getIndexValue(saleDate,this) / utils.getIndexValue(purchaseDate, this));
+                capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - indexedPurchaseAmount);
+                capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.LONG_TERM_LOSS : GAINTYPE.LONG_TERM_GAIN);
+                if(GAINTYPE.LONG_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
                     taxPercent = Double.parseDouble(getString(R.string.mutual_fund_debt_long_term_percent))/100;
-                    capitalGainTaxAmount = capitalGainAmount * taxPercent;
-                    capitalGainAmountTextView = getString(R.string.capitalgain_gain_amount_textview);
-                    gainTypeDisplayValue = getString(R.string.capitalgain_long_term_gain_textview);
-                    netProfit = capitalGainAmount - capitalGainTaxAmount;
-                    capitalGainTaxPercentDisplayValue = getString(R.string.mutual_fund_debt_long_term_percent) + "%";
+                    capitalGainCalcDisplayData.setCapitalGainTaxAmount(capitalGainCalcDisplayData.getCapitalGainAmount() * taxPercent);
+                    capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_gain_amount_textview));
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_long_term_gain_textview));
+                    capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount() - capitalGainCalcDisplayData.getCapitalGainTaxAmount());
+                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.mutual_fund_debt_long_term_percent) + "%");
                 }
                 else{
-                    gainTypeDisplayValue = getString(R.string.capitalgain_long_term_loss_textview);
-                    capitalGainAmountTextView = getString(R.string.capitalgain_loss_amount_textview);
-                    capitalGainTaxAmount = 0.00;
-                    capitalGainTaxPercentDisplayValue = getString(R.string.zero_percent);
-                    netProfit = capitalGainAmount;
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_long_term_loss_textview));
+                    capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_loss_amount_textview));
+                    capitalGainCalcDisplayData.setCapitalGainTaxAmount(new Double(0));
+                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.zero_percent));
+                    capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount());
                 }
-                getCapitalGainTaxAmountDisplayValue = utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainTaxAmount));
+                capitalGainCalcDisplayData.setGetCapitalGainTaxAmountDisplayValue(utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getCapitalGainTaxAmount())));
             }
         }
         //Equity Mutual Fund
         else{
-            utils.calculateDifferenceInPurchaseAndSaleDate(MUTUAL_FUND_PURCHASEYEAR,MUTUAL_FUND_SALEYEAR);
-            capitalGainAmount = totalSaleAmount - totalPurchaseAmount;
+            utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate());
+            capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - capitalGainCalcDisplayData.getTotalPurchaseAmount());
             //Short term computation
             if(utils.yearDiff < 1){
-                gaintype = capitalGainAmount < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN;
-                if(GAINTYPE.SHORT_TERM_GAIN.equals(gaintype)){
+                capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN);
+                if(GAINTYPE.SHORT_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
                     taxPercent = Double.parseDouble(getString(R.string.mutual_fund_equity_short_term_percent))/100;
-                    capitalGainTaxAmount = capitalGainAmount * taxPercent;
-                    gainTypeDisplayValue = getString(R.string.capitalgain_shot_term_gain_textview);
-                    capitalGainAmountTextView = getString(R.string.capitalgain_gain_amount_textview);
-                    capitalGainTaxPercentDisplayValue = getString(R.string.mutual_fund_equity_short_term_percent) + "%";
-                    netProfit = capitalGainAmount - capitalGainTaxAmount;
+                    capitalGainCalcDisplayData.setCapitalGainTaxAmount(capitalGainCalcDisplayData.getCapitalGainAmount() * taxPercent);
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_shot_term_gain_textview));
+                    capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_gain_amount_textview));
+                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.mutual_fund_equity_short_term_percent) + "%");
+                    capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount() - capitalGainCalcDisplayData.getCapitalGainTaxAmount());
                 }
                 else{
-                    gainTypeDisplayValue = getString(R.string.capitalgain_shot_term_loss_textview);
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_shot_term_loss_textview));
                 }
             }
             //Long term computation
             else{
-                gaintype = capitalGainAmount < 0 ? GAINTYPE.LONG_TERM_LOSS : GAINTYPE.LONG_TERM_GAIN;
-                if(GAINTYPE.LONG_TERM_GAIN.equals(gaintype)){
-                    if(capitalGainAmount > Double.parseDouble(getString(R.string.mutual_fund_equity_long_term_amount_limit))){
+                capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.LONG_TERM_LOSS : GAINTYPE.LONG_TERM_GAIN);
+                if(GAINTYPE.LONG_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
+                    if(capitalGainCalcDisplayData.getCapitalGainAmount() > Double.parseDouble(getString(R.string.mutual_fund_equity_long_term_amount_limit))){
                         taxPercent = Double.parseDouble(getString(R.string.mutual_fund_equity_long_term_percent))/100;
-                        capitalGainTaxAmount = capitalGainAmount * taxPercent;
-                        netProfit = capitalGainAmount - capitalGainTaxAmount;
+                        capitalGainCalcDisplayData.setCapitalGainTaxAmount(capitalGainCalcDisplayData.getCapitalGainAmount() * taxPercent);
+                        capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount() - capitalGainCalcDisplayData.getCapitalGainTaxAmount());
                     }
                     else{
-                        capitalGainTaxAmount = 0.00;
-                        capitalGainTaxPercentDisplayValue = getString(R.string.zero_percent);
-                        netProfit = capitalGainAmount;
+                        capitalGainCalcDisplayData.setCapitalGainTaxAmount(new Double(0));
+                        capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.zero_percent));
+                        capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount());
                     }
-                    gainTypeDisplayValue = getString(R.string.capitalgain_long_term_gain_textview);
-                    capitalGainAmountTextView = getString(R.string.capitalgain_gain_amount_textview);
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_long_term_gain_textview));
+                    capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_gain_amount_textview));
                 }
                 else{
-                    gainTypeDisplayValue = getString(R.string.capitalgain_long_term_loss_textview);
+                    capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_long_term_loss_textview));
                 }
             }
 
-            if(GAINTYPE.SHORT_TERM_LOSS.equals(gaintype) || GAINTYPE.LONG_TERM_LOSS.equals(gaintype)){
-                capitalGainAmountTextView = getString(R.string.capitalgain_loss_amount_textview);
-                capitalGainTaxAmount = 0.00;
-                capitalGainTaxPercentDisplayValue = getString(R.string.zero_percent);
-                netProfit = capitalGainAmount;
+            if(GAINTYPE.SHORT_TERM_LOSS.equals(capitalGainCalcDisplayData.getGaintype()) || GAINTYPE.LONG_TERM_LOSS.equals(capitalGainCalcDisplayData.getGaintype())){
+                capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_loss_amount_textview));
+                capitalGainCalcDisplayData.setCapitalGainTaxAmount(new Double(0));
+                capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.zero_percent));
+                capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount());
             }
-            getCapitalGainTaxAmountDisplayValue = utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainTaxAmount));
+            capitalGainCalcDisplayData.setGetCapitalGainTaxAmountDisplayValue(utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getCapitalGainTaxAmount())));
         }
 
-        capitalGainAmountDisplayValue = utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainAmount));
-        netProfitDisplayValue = utils.rupeeSymbol + utils.formatAmount(String.valueOf(netProfit));
+        capitalGainCalcDisplayData.setCapitalGainAmountDisplayValue(utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getCapitalGainAmount())));
+        capitalGainCalcDisplayData.setNetProfitDisplayValue(utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getNetProfit())));
 
+        return capitalGainCalcDisplayData;
     }
 
     @Override

@@ -3,20 +3,16 @@ package balajirajagopal.com.capitalgaincalculator.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
+import balajirajagopal.com.capitalgaincalculator.R;
 import balajirajagopal.com.capitalgaincalculator.common.ReportGen;
 import balajirajagopal.com.capitalgaincalculator.enums.ASSET_SUBTYPE;
+import balajirajagopal.com.capitalgaincalculator.enums.GAINTYPE;
 import balajirajagopal.com.capitalgaincalculator.metadata.CapitalGainCalcDisplayData;
 import balajirajagopal.com.capitalgaincalculator.metadata.CapitalGainCalcInputData;
 import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
-import balajirajagopal.com.capitalgaincalculator.enums.GAINTYPE;
-import balajirajagopal.com.capitalgaincalculator.R;
 
-public class MutualFundReport extends AppCompatActivity {
+public class SharesCalcReportActivity extends AppCompatActivity {
 
     private static Intent intent;
     private GAINTYPE gaintype;
@@ -25,11 +21,10 @@ public class MutualFundReport extends AppCompatActivity {
     private CapitalGainCalcDisplayData capitalGainCalcDisplayData;
     private ReportGen reportGen;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mutual_fund_report);
+        setContentView(R.layout.activity_shares_calc_report);
 
         utils = new CapitalGainCalculatorUtils(true);
 
@@ -42,21 +37,21 @@ public class MutualFundReport extends AppCompatActivity {
     }
 
     /*
-    * Computes following attributes
-    * Capital Gain Type
-    * Capital Gain Amount
-    * Capital Gain Tax percent
-    * Capital Gain Tax amount
-    * Net profit
-    * */
+     * Computes following attributes
+     * Capital Gain Type
+     * Capital Gain Amount
+     * Capital Gain Tax percent
+     * Capital Gain Tax amount
+     * Net profit
+     * */
     public CapitalGainCalcDisplayData calculateGainDetails(CapitalGainCalcInputData capitalGainCalcInputData, CapitalGainCalcDisplayData capitalGainCalcDisplayData){
         Double taxPercent;
 
-        //Debt Mutual Fund
-        if(ASSET_SUBTYPE.MUTUAL_FUNDS_DEBT.equals(capitalGainCalcInputData.getAssetSubtype())){
+        //Listed Shares
+        if(ASSET_SUBTYPE.SHARES_LISTED.equals(capitalGainCalcInputData.getAssetSubtype())){
             utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate());
             //Short term computation
-            if(utils.yearDiff < Integer.parseInt(getString(R.string.mutual_funds_equity_type_shortterm_year))){
+            if(utils.yearDiff < Integer.parseInt(getString(R.string.shares_shortterm_year))){
                 capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - capitalGainCalcDisplayData.getTotalPurchaseAmount());
                 capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN);
                 capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount());
@@ -98,12 +93,12 @@ public class MutualFundReport extends AppCompatActivity {
                 capitalGainCalcDisplayData.setGetCapitalGainTaxAmountDisplayValue(utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getCapitalGainTaxAmount())));
             }
         }
-        //Equity Mutual Fund
+        //Unlisted shares
         else{
             utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate());
             capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - capitalGainCalcDisplayData.getTotalPurchaseAmount());
             //Short term computation
-            if(utils.yearDiff < Integer.parseInt(getString(R.string.mutual_funds_debt_type_shortterm_year))){
+            if(utils.yearDiff < Integer.parseInt(getString(R.string.shares_shortterm_year))){
                 capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN);
                 if(GAINTYPE.SHORT_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
                     taxPercent = (double) Double.parseDouble(getString(R.string.mutual_fund_equity_short_term_percent))/ (double) 100;

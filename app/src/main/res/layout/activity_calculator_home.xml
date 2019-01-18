@@ -102,7 +102,7 @@
                 android:textStyle="bold"
                 ads:fontFamily="@font/enriqueta"
                 ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintHorizontal_bias="0.25"
+                ads:layout_constraintHorizontal_bias="0.09"
                 ads:layout_constraintStart_toEndOf="@+id/housePropertyTextView"
                 ads:layout_constraintTop_toBottomOf="@+id/mutualFundImageView" />
 
@@ -138,10 +138,10 @@
 
             <TextView
                 android:id="@+id/stocksTextView"
-                android:layout_width="131dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginStart="76dp"
+                android:layout_marginLeft="76dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/stocks_textview"
                 android:textColor="@color/colorAccent"
@@ -181,6 +181,7 @@
                 android:textStyle="bold"
                 ads:fontFamily="@font/enriqueta"
                 ads:layout_constraintEnd_toEndOf="parent"
+                ads:layout_constraintHorizontal_bias="0.61"
                 ads:layout_constraintStart_toEndOf="@+id/stocksTextView"
                 ads:layout_constraintTop_toBottomOf="@+id/goldImageView" />
         </android.support.constraint.ConstraintLayout>

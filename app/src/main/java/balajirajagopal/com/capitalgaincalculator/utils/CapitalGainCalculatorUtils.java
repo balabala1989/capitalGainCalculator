@@ -41,6 +41,7 @@ public class CapitalGainCalculatorUtils {
     public long monthDiff = 0;
     public long daysDiff = 0;
     public long duration = 0;
+    private boolean isFormatAmountForDisplay;
 
     static{
         if(intToStringMonth.isEmpty()) {
@@ -56,8 +57,11 @@ public class CapitalGainCalculatorUtils {
         }
     }
 
+    public CapitalGainCalculatorUtils(boolean isFormatAmountForDisplay) {
+        this.isFormatAmountForDisplay = isFormatAmountForDisplay;
+    }
 
-   /* Calculate the Sale Year value
+    /* Calculate the Sale Year value
      * In India Financial year is from Apr to Mar.
      * So if the app is opened before March make year as Current Year -1 and Currenct Year otherwise
      * make the year as current year and current year + 1
@@ -144,15 +148,11 @@ public class CapitalGainCalculatorUtils {
      * Sets textview attributes for data rows.
      */
 
-    public void setTextViewAttributes(TextView textView, String stringMessage, int backgroundColorChanger, int leftMargin, int rightMargin){
+    public void setTextViewAttributes(TextView textView, String stringMessage, int leftMargin, int rightMargin){
         textView.setText(stringMessage);
         TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT,1.0f);
         params.setMargins(leftMargin,1,rightMargin,1);
         textView.setLayoutParams(params);
-        if(backgroundColorChanger % 2 == 0)
-            textView.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
-        else
-            textView.setBackgroundColor(Color.parseColor("#3D008577"));
         textView.setGravity(Gravity.LEFT);
         textView.setTextColor(Color.parseColor("#FF000000"));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,16F);
@@ -195,7 +195,7 @@ public class CapitalGainCalculatorUtils {
 
     public String formatAmount(String amountString){
         String formattedString;
-        if (amountString.contains(".")) {
+        if (amountString.contains(".") || isFormatAmountForDisplay) {
             formattedString = formatDecimal(amountString);
         } else {
             formattedString = formatInteger(amountString);
@@ -308,7 +308,7 @@ public class CapitalGainCalculatorUtils {
     private String formatInteger(String str) {
         BigDecimal parsed = new BigDecimal(str);
         DecimalFormat formatter =
-                new DecimalFormat( "##,##,##,##,###", new DecimalFormatSymbols(Locale.US));
+                new DecimalFormat( "##,##,##,##,##0", new DecimalFormatSymbols(Locale.US));
         return formatter.format(parsed);
     }
 
@@ -318,7 +318,7 @@ public class CapitalGainCalculatorUtils {
         }
         BigDecimal parsed = new BigDecimal(str);
         // example pattern #,###.00
-        DecimalFormat formatter = new DecimalFormat("##,##,##,##,###." + getDecimalPattern(str),
+        DecimalFormat formatter = new DecimalFormat("##,##,##,##,##0." + (isFormatAmountForDisplay ? getDecimalPatternForDisplay(str) : getDecimalPatternForEditText(str)),
                 new DecimalFormatSymbols(Locale.US));
         formatter.setRoundingMode(RoundingMode.DOWN);
         return formatter.format(parsed);
@@ -328,8 +328,22 @@ public class CapitalGainCalculatorUtils {
      * It will return suitable pattern for format decimal
      * For example: 10.2 -> return 0 | 10.23 -> return 00, | 10.235 -> return 000
      */
-    private String getDecimalPattern(String str) {
-        int decimalCount = str.length() - str.indexOf(".") - 1;
+
+    /* Reason for having two functions is that during display double has pre defined .0 so if you include -1 then final result will comes 1.0. So removing -1 will result as 1.00
+    *  You cannot remove -1 during edit text since we want move to the lenght after . and do not want excess .0 coming
+    *  Don't know why above statement is true. I can do a better solution coming by dry run since I don't have time now doing it in a hacky way. Please GOD forgive me
+    * */
+    private String getDecimalPatternForDisplay(String str) {
+        int decimalCount = str.length() - str.indexOf(".");
+        StringBuilder decimalPattern = new StringBuilder();
+        for (int i = 0; i < decimalCount && i < MAX_DECIMAL; i++) {
+            decimalPattern.append("0");
+        }
+        return decimalPattern.toString();
+    }
+
+    private String getDecimalPatternForEditText(String str) {
+        int decimalCount = str.length() - 1 - str.indexOf(".");
         StringBuilder decimalPattern = new StringBuilder();
         for (int i = 0; i < decimalCount && i < MAX_DECIMAL; i++) {
             decimalPattern.append("0");
@@ -341,7 +355,7 @@ public class CapitalGainCalculatorUtils {
     * Get the cost inflation index if a date is provided
     */
 
-    public Long getIndexValue(String date, Context context){
+    public double getIndexValue(String date, Context context){
 
         String[] splitDate = date.split("-");
         Long month = Long.parseLong(splitDate[1]);
@@ -356,6 +370,14 @@ public class CapitalGainCalculatorUtils {
             yearIndex = String.valueOf(year - 1) + "-" + String.valueOf(year);
         }
 
-        return IndexationCache.get(yearIndex,context);
+        return (double) IndexationCache.get(yearIndex,context);
+    }
+
+    /*
+    * Returns the background color required for report
+    */
+
+    public int getBackGroundColorForReport(int backGroundColorIndicator){
+        return Color.parseColor(backGroundColorIndicator % 2 == 0 ? "#FFFFFFFF" : "#3D008577");
     }
 }

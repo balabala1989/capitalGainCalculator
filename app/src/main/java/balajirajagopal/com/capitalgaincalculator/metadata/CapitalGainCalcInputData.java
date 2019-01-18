@@ -21,6 +21,7 @@ public class CapitalGainCalcInputData implements Parcelable {
     private ASSET_SUBTYPE assetSubtype;
 
     public CapitalGainCalcInputData(Parcel in) {
+        String assetSubTypeReadString;
         saleDate = in.readString();
         purchaseDate = in.readString();
         saleAmount = in.readString();
@@ -31,7 +32,9 @@ public class CapitalGainCalcInputData implements Parcelable {
         numberOfUnits = in.readString();
         headerMessage = in.readString();
         assettype = ASSETTYPE.valueOf(in.readString());
-        assetSubtype = ASSET_SUBTYPE.valueOf(in.readString());
+        assetSubTypeReadString = in.readString();
+        if(assetSubTypeReadString != null )
+            assetSubtype = ASSET_SUBTYPE.valueOf(assetSubTypeReadString);
     }
 
     public CapitalGainCalcInputData(){
@@ -155,6 +158,7 @@ public class CapitalGainCalcInputData implements Parcelable {
         dest.writeString(numberOfUnits);
         dest.writeString(headerMessage);
         dest.writeString(assettype.name());
-        dest.writeString(assetSubtype.name());
+        if(assetSubtype != null)
+            dest.writeString(assetSubtype.name());
     }
 }

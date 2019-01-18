@@ -50,7 +50,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MutualFundReport"
+        <activity
+            android:name=".activity.MutualFundReport"
             android:configChanges="orientation"
             android:label="@string/title_activity_mutual_funds_report"
             android:screenOrientation="portrait">
@@ -58,7 +59,41 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
         </activity>
-
+        <activity
+            android:name=".activity.GoldCalcActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_gold_calc"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
+        </activity>
+        <activity
+            android:name=".activity.GoldCalcReportActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_gold_report"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
+        </activity>
+        <activity
+            android:name=".activity.SharesCalcActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_shares_calc"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
+        </activity>
+        <activity android:name=".activity.SharesCalcReportActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_shares_report"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="balajirajagopal.com.capitalgaincalculator.activity.CalculatorHomeActivity" />
+        </activity>
     </application>
 
 </manifest>

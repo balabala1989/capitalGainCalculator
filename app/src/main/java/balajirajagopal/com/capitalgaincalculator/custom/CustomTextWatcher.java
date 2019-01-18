@@ -5,6 +5,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import balajirajagopal.com.capitalgaincalculator.activity.GoldCalcActivity;
+import balajirajagopal.com.capitalgaincalculator.activity.SharesCalcActivity;
 import balajirajagopal.com.capitalgaincalculator.utils.CapitalGainCalculatorUtils;
 import balajirajagopal.com.capitalgaincalculator.activity.MutualFundsCalcActivity;
 
@@ -33,7 +35,7 @@ public class CustomTextWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         String str = editable.toString();
-        CapitalGainCalculatorUtils utils = new CapitalGainCalculatorUtils();
+        CapitalGainCalculatorUtils utils = new CapitalGainCalculatorUtils(false);
         // cleanString this the string which not contain prefix and ,
         String cleanString = str.replaceAll("[,]", "");
         // for prevent afterTextChanged recursive call
@@ -43,17 +45,19 @@ public class CustomTextWatcher implements TextWatcher {
         previousCleanString = cleanString;
 
         String formattedString = utils.formatAmount(cleanString);
-        /*if (cleanString.contains(".")) {
-            formattedString = formatDecimal(cleanString);
-        } else {
-            formattedString = formatInteger(cleanString);
-        }*/
+
         editText.removeTextChangedListener(this); // Remove listener
         editText.setText(formattedString);
         handleSelection();
         editText.addTextChangedListener(this); // Add back the listener
         if (classObject instanceof MutualFundsCalcActivity){
             ((MutualFundsCalcActivity) classObject).checkButtonCanBeEnabled();
+        }
+        else if(classObject instanceof GoldCalcActivity){
+            ((GoldCalcActivity) classObject).checkButtonCanBeEnabled();
+        }
+        else if(classObject instanceof SharesCalcActivity){
+            ((SharesCalcActivity) classObject).checkButtonCanBeEnabled();
         }
     }
 

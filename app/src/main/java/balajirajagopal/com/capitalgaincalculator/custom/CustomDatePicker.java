@@ -9,6 +9,8 @@ import android.widget.EditText;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import balajirajagopal.com.capitalgaincalculator.activity.GoldCalcActivity;
+import balajirajagopal.com.capitalgaincalculator.activity.SharesCalcActivity;
 import balajirajagopal.com.capitalgaincalculator.enums.DATETYPE;
 import balajirajagopal.com.capitalgaincalculator.activity.MutualFundsCalcActivity;
 
@@ -50,6 +52,12 @@ public class CustomDatePicker implements View.OnClickListener, DatePickerDialog.
             if(activity instanceof MutualFundsCalcActivity){
                 dialogBox = ((MutualFundsCalcActivity) activity).setMinimumSaleDate(dialogBox);
             }
+            else if(activity instanceof GoldCalcActivity){
+                dialogBox = ((GoldCalcActivity) activity).setMinimumSaleDate(dialogBox);
+            }
+            else if (activity instanceof SharesCalcActivity){
+                dialogBox = ((SharesCalcActivity) activity).setMinimumSaleDate(dialogBox);
+            }
         }
 
         dialogBox.getDatePicker().setMaxDate(cal.getTimeInMillis());
@@ -64,6 +72,14 @@ public class CustomDatePicker implements View.OnClickListener, DatePickerDialog.
             if(activity instanceof MutualFundsCalcActivity){
                 ((MutualFundsCalcActivity) activity).resetSaleDateOnChangeOfPurchaseDate(editText.getText().toString());
                 ((MutualFundsCalcActivity) activity).enableFairMarketValueEditText(editText.getText().toString());
+            }
+            else if(activity instanceof GoldCalcActivity){
+                ((GoldCalcActivity) activity).resetSaleDateOnChangeOfPurchaseDate(editText.getText().toString());
+                ((GoldCalcActivity) activity).enableFairMarketValueEditText(editText.getText().toString());
+            }
+            else if(activity instanceof SharesCalcActivity){
+                ((SharesCalcActivity) activity).resetSaleDateOnChangeOfPurchaseDate(editText.getText().toString());
+                ((SharesCalcActivity) activity).enableFairMarketValueEditText(editText.getText().toString());
             }
         }
     }

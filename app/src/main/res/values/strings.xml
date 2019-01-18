@@ -5,8 +5,8 @@
     <!-- HomePage Activity Strings-->
     <string name="mutual_funds_textview">Mutual Funds</string>
     <string name="real_estate_textview">House/Property</string>
-    <string name="stocks_textview">Shares/Stocks</string>
-    <string name="gold_fmp_textview">Gold/FMP</string>
+    <string name="stocks_textview">Shares</string>
+    <string name="gold_fmp_textview">Gold</string>
     <string name="heading_textview">Types of Asset</string>
     <string name="homepage_banner_ad_unit_id">ca-app-pub-3751256909955752/5788087576</string>
 
@@ -32,7 +32,6 @@
     <string name="fair_market_share_value_textview">Fair Market Price</string>
     <string name="fair_market_share_value_equity_textview">as on 31-Jan-2018</string>
     <string name="fair_market_share_value_purchasedate_textview">as on 01-Apr-2001</string>
-
 
 
     <!-- Mutual Funds calculation Report Strings-->
@@ -70,19 +69,60 @@
     <string name="capitalgain_tax_amount_textview">Tax Amount (T)</string>
     <string name="capitalgain_tax_info_textview">Added to income and taxed as per tax slab</string>
     <string name="capitalgain_net_profit_textview">Net Profit (A - T)</string>
+    <string name="banner_ad_unit_id_mutual_fund_report_page">ca-app-pub-3751256909955752/6461632693</string>
+
+
+    <!-- Gold Activity Strings-->
+    <string name="title_activity_gold_calc">Gold Calculation</string>
+    <string name="banner_ad_unit_id_gold_calc_page">ca-app-pub-3751256909955752/9822029871</string>
+
+    <!-- Gold Calculation Report Strings -->
+    <string name="title_activity_gold_report">Gold Calculation Report</string>
+    <string name="banner_ad_unit_id_gold_calc_report_page">ca-app-pub-3751256909955752/4144947773</string>
+    <string name="gold_assesttype_display_textview">Gold</string>
+
+    <!-- Shares Activity Strings-->
+    <string name="title_activity_shares_calc">Shares Calculation</string>
+    <string name="banner_ad_unit_id_shares_calc_page">ca-app-pub-3751256909955752/8930208898</string>
+    <string name="listed_shares_radio_button">Listed</string>
+    <string name="unlisted_shares_radio_button">Not Listed</string>
+    <string name="number_of_shares_textview">Number of Shares</string>
+
+    <!-- Shares Calculation Report Strings -->
+    <string name="title_activity_shares_report">Shares Calculation Report</string>
+    <string name="banner_ad_unit_id_shares_calc_report_page">ca-app-pub-3751256909955752/5707915654</string>
+    <string name="listed_shares_assesttype_display_textview">Listed Shares</string>
+    <string name="unlisted_shares_assesttype_display_textview">Unlisted Shares</string>
 
 
     <!-- Common Strings -->
     <string name="expense_hint_editText">Total Brokerage/Commission paid if any</string>
     <string name="zero_percent">0%</string>
-    <string name="mutual_funds_equity_index_date_limit">31-01-2018</string>
+    <string name="mutual_funds_equity_and_listed_shares_index_date_limit">31-01-2018</string>
     <string name="index_date_limit">01-04-2001</string>
+
     <string name="mutual_fund_equity_short_term_percent">15</string>
     <string name="mutual_fund_equity_long_term_percent">10</string>
     <string name="mutual_fund_debt_long_term_percent">20</string>
     <string name="mutual_fund_equity_long_term_amount_limit">100000</string>
+    <string name="mutual_funds_equity_type_shortterm_year">3</string>
+    <string name="mutual_funds_debt_type_shortterm_year">1</string>
+
+    <string name="gold_long_term_percent">20</string>
+    <string name="gold_shortterm_year">3</string>
+
+    <string name="shares_listed_short_term_percent">15</string>
+    <string name="shares_listed_long_term_percent">10</string>
+    <string name="shares_unlisted_long_term_percent">20</string>
+    <string name="shares_shortterm_year">1</string>
+    <string name="shares_listed_long_term_amount_limit">100000</string>
+
     <string name="purchaseprice_tablerow_textview">Purchase Price</string>
+    <string name="saleprice_tablerow_textview">Sale Price</string>
     <string name="not_applicable">Nil</string>
+    <string name="hint_purchase_date">Choose the purchase date</string>
+    <string name="hint_sale_date">Choose the sale date</string>
+
 
 
 </resources>

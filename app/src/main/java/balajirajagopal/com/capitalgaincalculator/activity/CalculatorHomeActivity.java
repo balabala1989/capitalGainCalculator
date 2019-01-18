@@ -43,5 +43,25 @@ public class CalculatorHomeActivity extends AppCompatActivity {
                 startActivity(mutualFundsIntent);
             }
         });
+
+        ImageView goldImageView = (ImageView) findViewById(R.id.goldImageView);
+        final Intent goldIntent = new Intent(this, GoldCalcActivity.class);
+
+        goldImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(goldIntent);
+            }
+        });
+
+        ImageView sharesImageView = (ImageView) findViewById(R.id.stocksImageView);
+        final Intent shareIntent = new Intent(this, SharesCalcActivity.class);
+
+        sharesImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(shareIntent);
+            }
+        });
     }
 }

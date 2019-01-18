@@ -33,7 +33,7 @@ public class HousePropertyCalcActivity extends AppCompatActivity implements Adap
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
-        utils = new CapitalGainCalculatorUtils();
+        utils = new CapitalGainCalculatorUtils(false);
 
         intent = getIntent();
 

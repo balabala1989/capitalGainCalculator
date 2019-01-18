@@ -2,13 +2,20 @@ package balajirajagopal.com.capitalgaincalculator.common;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+
 import balajirajagopal.com.capitalgaincalculator.R;
+import balajirajagopal.com.capitalgaincalculator.activity.GoldCalcReportActivity;
 import balajirajagopal.com.capitalgaincalculator.activity.MutualFundReport;
+import balajirajagopal.com.capitalgaincalculator.activity.SharesCalcReportActivity;
 import balajirajagopal.com.capitalgaincalculator.enums.ASSETTYPE;
 import balajirajagopal.com.capitalgaincalculator.enums.ASSET_SUBTYPE;
 import balajirajagopal.com.capitalgaincalculator.metadata.CapitalGainCalcDisplayData;
@@ -34,7 +41,7 @@ public class ReportGen {
     }
 
     public void generateReport(){
-        utils = new CapitalGainCalculatorUtils();
+        utils = new CapitalGainCalculatorUtils(true);
 
         //Get the Intent
         intent = activity.getIntent();
@@ -42,6 +49,12 @@ public class ReportGen {
 
         if(activity instanceof MutualFundReport){
             tableLayout = activity.findViewById(R.id.mutualFundResultTableLayout);
+        }
+        else if(activity instanceof GoldCalcReportActivity){
+            tableLayout = activity.findViewById(R.id.goldCalcReportTableLayout);
+        }
+        else if(activity instanceof SharesCalcReportActivity){
+            tableLayout = activity.findViewById(R.id.sharesCalcReportTableLayout);
         }
 
         tableLayout.removeAllViews();
@@ -80,6 +93,8 @@ public class ReportGen {
         //Create dummy space
         tableLayout.addView(utils.createSpaceBetweenTables(activity),tableLayoutIndex++);
 
+        loadAdViewDetails();
+
     }
 
     private void loadAssetDetails(){
@@ -97,7 +112,7 @@ public class ReportGen {
         //Asset Type
         TextView assetTypeTextView = new TextView(activity);
         TextView assetTypeDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(assetTypeTextView,activity.getString(R.string.assettype_tablerow_textview),backGroundColorChange,10, 1);
+        utils.setTextViewAttributes(assetTypeTextView,activity.getString(R.string.assettype_tablerow_textview),10, 1);
 
         if(ASSETTYPE.MUTUAL_FUNDS.equals(capitalGainCalcInputData.getAssettype())) {
             if(ASSET_SUBTYPE.MUTUAL_FUNDS_DEBT.equals(capitalGainCalcInputData.getAssetSubtype()))
@@ -105,10 +120,20 @@ public class ReportGen {
             else
                 dataStringResourceID = R.string.equity_mutualfund_assettype_textview;
         }
+        else if(ASSETTYPE.GOLD.equals(capitalGainCalcInputData.getAssettype())){
+            dataStringResourceID = R.string.gold_assesttype_display_textview;
+        }
+        else if(ASSETTYPE.SHARES.equals(capitalGainCalcInputData.getAssettype())){
+            if(ASSET_SUBTYPE.SHARES_LISTED.equals(capitalGainCalcInputData.getAssetSubtype()))
+                dataStringResourceID = R.string.listed_shares_assesttype_display_textview;
+            else
+                dataStringResourceID = R.string.unlisted_shares_assesttype_display_textview;
+        }
 
-        utils.setTextViewAttributes(assetTypeDataTextView,activity.getString(dataStringResourceID),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(assetTypeDataTextView,activity.getString(dataStringResourceID),1, 10);
 
         assetTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        assetTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         assetTableRow.addView(assetTypeTextView,0);
         assetTableRow.addView(assetTypeDataTextView,1);
 
@@ -121,11 +146,12 @@ public class ReportGen {
             //Number of Units
             TextView numberOfUnitsTextView = new TextView(activity);
             TextView numberOfUnitsDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(numberOfUnitsTextView, activity.getString(R.string.numberofunits_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(numberOfUnitsDataTextView, capitalGainCalcInputData.getNumberOfUnits(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(numberOfUnitsTextView, activity.getString(R.string.numberofunits_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(numberOfUnitsDataTextView, capitalGainCalcInputData.getNumberOfUnits(), 1, 10);
 
             assetTableRow = new TableRow(activity);
             assetTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            assetTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             assetTableRow.addView(numberOfUnitsTextView, 0);
             assetTableRow.addView(numberOfUnitsDataTextView, 1);
 
@@ -151,10 +177,11 @@ public class ReportGen {
         String[] purchaseData = capitalGainCalcInputData.getPurchaseDate().split("-");
         purchaseYearData = new StringBuffer("").append(purchaseData[0]).append("-").append(utils.getEnglishNameForIntegerMonth(Integer.parseInt(purchaseData[1]))).append("-").append(purchaseData[2]).toString();
 
-        utils.setTextViewAttributes(purchaseYearTextView,activity.getString(R.string.purchaseyear_tablerow_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(purchaseYearDataTextView,purchaseYearData,backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(purchaseYearTextView,activity.getString(R.string.purchaseyear_tablerow_textview),10, 1);
+        utils.setTextViewAttributes(purchaseYearDataTextView,purchaseYearData,1, 10);
 
         purchaseTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        purchaseTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         purchaseTableRow.addView(purchaseYearTextView,0);
         purchaseTableRow.addView(purchaseYearDataTextView,1);
 
@@ -166,11 +193,12 @@ public class ReportGen {
             //Purchase Price per Unit
             TextView purchasePricePerUnitTextView = new TextView(activity);
             TextView purchasePricePerUnitDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(purchasePricePerUnitTextView, activity.getString(R.string.purchaseprice_perunit_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(purchasePricePerUnitDataTextView, utils.rupeeSymbol + capitalGainCalcInputData.getPurchaseAmount(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(purchasePricePerUnitTextView, activity.getString(R.string.purchaseprice_perunit_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(purchasePricePerUnitDataTextView, utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getPurchaseAmount())), 1, 10);
 
             purchaseTableRow = new TableRow(activity);
             purchaseTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            purchaseTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             purchaseTableRow.addView(purchasePricePerUnitTextView, 0);
             purchaseTableRow.addView(purchasePricePerUnitDataTextView, 1);
 
@@ -179,16 +207,17 @@ public class ReportGen {
             //Purchase Price for all  Unit
             TextView purchasePriceTotalUnitsTextView = new TextView(activity);
             TextView purchasePriceTotalUnitsDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(purchasePriceTotalUnitsTextView, activity.getString(R.string.purchaseprice_costofunit_tablerow_textview), backGroundColorChange, 10, 1);
+            utils.setTextViewAttributes(purchasePriceTotalUnitsTextView, activity.getString(R.string.purchaseprice_costofunit_tablerow_textview), 10, 1);
             Double purchaseAmount = Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getPurchaseAmount()));
             Long numberOfUnits = Long.parseLong(utils.replaceComma(capitalGainCalcInputData.getNumberOfUnits()));
 
             purchaseCost = purchaseAmount * numberOfUnits;
 
-            utils.setTextViewAttributes(purchasePriceTotalUnitsDataTextView, utils.rupeeSymbol + utils.formatAmount(String.valueOf(purchaseCost)), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(purchasePriceTotalUnitsDataTextView, utils.rupeeSymbol + utils.formatAmount(String.valueOf(purchaseCost)), 1, 10);
 
             purchaseTableRow = new TableRow(activity);
             purchaseTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            purchaseTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             purchaseTableRow.addView(purchasePriceTotalUnitsTextView, 0);
             purchaseTableRow.addView(purchasePriceTotalUnitsDataTextView, 1);
 
@@ -197,13 +226,14 @@ public class ReportGen {
         else{
             TextView purchasePriceTextView = new TextView(activity);
             TextView purchasePriceDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(purchasePriceTextView, activity.getString(R.string.purchaseprice_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(purchasePriceDataTextView, utils.rupeeSymbol + capitalGainCalcInputData.getPurchaseAmount(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(purchasePriceTextView, activity.getString(R.string.purchaseprice_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(purchasePriceDataTextView, utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getPurchaseAmount())), 1, 10);
 
             purchaseCost = Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getPurchaseAmount()));;
 
             purchaseTableRow = new TableRow(activity);
             purchaseTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            purchaseTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             purchaseTableRow.addView(purchasePriceTextView, 0);
             purchaseTableRow.addView(purchasePriceDataTextView, 1);
 
@@ -215,12 +245,13 @@ public class ReportGen {
         isPurchaseExpenseProvided = isExpenseProvided(capitalGainCalcInputData.getPurchaseExpense());
         TextView purchaseExpenseTextView = new TextView(activity);
         TextView purchaseExpenseDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(purchaseExpenseTextView,activity.getString(R.string.purchase_expense_textview),backGroundColorChange,10, 1);
-        String purchaseExpenseString =  isPurchaseExpenseProvided ? utils.rupeeSymbol + capitalGainCalcInputData.getPurchaseExpense() : activity.getString(R.string.not_applicable);
-        utils.setTextViewAttributes(purchaseExpenseDataTextView,purchaseExpenseString,backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(purchaseExpenseTextView,activity.getString(R.string.purchase_expense_textview),10, 1);
+        String purchaseExpenseString =  isPurchaseExpenseProvided ? utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getPurchaseExpense())) : activity.getString(R.string.not_applicable);
+        utils.setTextViewAttributes(purchaseExpenseDataTextView,purchaseExpenseString,1, 10);
 
         purchaseTableRow = new TableRow(activity);
         purchaseTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        purchaseTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         purchaseTableRow.addView(purchaseExpenseTextView,0);
         purchaseTableRow.addView(purchaseExpenseDataTextView,1);
 
@@ -229,13 +260,14 @@ public class ReportGen {
         //Total Purchase cost
         TextView purchaseTotalCostTextView = new TextView(activity);
         TextView purchaseTotalCostDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(purchaseTotalCostTextView,activity.getString(R.string.purchaseprice_total_tablerow_textview),backGroundColorChange,10, 1);
+        utils.setTextViewAttributes(purchaseTotalCostTextView,activity.getString(R.string.purchaseprice_total_tablerow_textview),10, 1);
         Double purchaseExpense = isPurchaseExpenseProvided ? Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getPurchaseExpense())) : new Double(0);
         capitalGainCalcDisplayData.setTotalPurchaseAmount(purchaseCost + purchaseExpense);
-        utils.setTextViewAttributes(purchaseTotalCostDataTextView,utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getTotalPurchaseAmount())),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(purchaseTotalCostDataTextView,utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getTotalPurchaseAmount())),1, 10);
 
         purchaseTableRow = new TableRow(activity);
         purchaseTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        purchaseTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         purchaseTableRow.addView(purchaseTotalCostTextView,0);
         purchaseTableRow.addView(purchaseTotalCostDataTextView,1);
 
@@ -256,11 +288,12 @@ public class ReportGen {
             //Fair market value per unit
             TextView fairMarketPricePerUnitTextView = new TextView(activity);
             TextView fairMarketPricePerUnitDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(fairMarketPricePerUnitTextView, activity.getString(R.string.fairmarket_price_per_unit_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(fairMarketPricePerUnitDataTextView, utils.rupeeSymbol + capitalGainCalcInputData.getFairMarketPrice(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(fairMarketPricePerUnitTextView, activity.getString(R.string.fairmarket_price_per_unit_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(fairMarketPricePerUnitDataTextView, utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getFairMarketPrice())), 1, 10);
 
             fairMarketPriceTableRow = new TableRow(activity);
             fairMarketPriceTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            fairMarketPriceTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             fairMarketPriceTableRow.addView(fairMarketPricePerUnitTextView, 0);
             fairMarketPriceTableRow.addView(fairMarketPricePerUnitDataTextView, 1);
 
@@ -269,17 +302,18 @@ public class ReportGen {
             //Total fair market value
             TextView fairMarketPriceTextView = new TextView(activity);
             TextView fairMarketPriceDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(fairMarketPriceTextView, activity.getString(R.string.fairmarket_total_price_tablerow_textview), backGroundColorChange, 10, 1);
+            utils.setTextViewAttributes(fairMarketPriceTextView, activity.getString(R.string.fairmarket_total_price_tablerow_textview), 10, 1);
 
             Double fairMarketPriceAmount = Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getFairMarketPrice()));
             Long numberOfUnits = Long.parseLong(utils.replaceComma(capitalGainCalcInputData.getNumberOfUnits()));
 
             capitalGainCalcDisplayData.setTotalPurchaseAmount(fairMarketPriceAmount * numberOfUnits);
 
-            utils.setTextViewAttributes(fairMarketPriceDataTextView, utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getTotalPurchaseAmount())), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(fairMarketPriceDataTextView, utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getTotalPurchaseAmount())), 1, 10);
 
             fairMarketPriceTableRow = new TableRow(activity);
             fairMarketPriceTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            fairMarketPriceTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             fairMarketPriceTableRow.addView(fairMarketPriceTextView, 0);
             fairMarketPriceTableRow.addView(fairMarketPriceDataTextView, 1);
 
@@ -288,13 +322,14 @@ public class ReportGen {
         else{
             TextView fairMarketPriceTextView = new TextView(activity);
             TextView fairMarketPriceDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(fairMarketPriceTextView, activity.getString(R.string.purchaseprice_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(fairMarketPriceDataTextView, utils.rupeeSymbol + capitalGainCalcInputData.getFairMarketPrice(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(fairMarketPriceTextView, activity.getString(R.string.purchaseprice_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(fairMarketPriceDataTextView, utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getFairMarketPrice())), 1, 10);
 
             capitalGainCalcDisplayData.setTotalPurchaseAmount(Double.parseDouble(capitalGainCalcInputData.getFairMarketPrice()));
 
             fairMarketPriceTableRow = new TableRow(activity);
             fairMarketPriceTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            fairMarketPriceTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             fairMarketPriceTableRow.addView(fairMarketPriceTextView, 0);
             fairMarketPriceTableRow.addView(fairMarketPriceDataTextView, 1);
 
@@ -323,10 +358,11 @@ public class ReportGen {
         saleYearData = new StringBuffer("").append(saleData[0]).append("-").append(utils.getEnglishNameForIntegerMonth(Integer.parseInt(saleData[1]))).append("-").append(saleData[2]).toString();
 
 
-        utils.setTextViewAttributes(saleYearTextView,activity.getString(R.string.saleyear_tablerow_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(saleYearDataTextView,saleYearData,backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(saleYearTextView,activity.getString(R.string.saleyear_tablerow_textview),10, 1);
+        utils.setTextViewAttributes(saleYearDataTextView,saleYearData,1, 10);
 
         saleTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        saleTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         saleTableRow.addView(saleYearTextView,0);
         saleTableRow.addView(saleYearDataTextView,1);
 
@@ -336,11 +372,12 @@ public class ReportGen {
             //Purchase Price per Unit
             TextView salePricePerUnitTextView = new TextView(activity);
             TextView salePricePerUnitDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(salePricePerUnitTextView, activity.getString(R.string.saleprice_perunit_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(salePricePerUnitDataTextView, utils.rupeeSymbol + capitalGainCalcInputData.getSaleAmount(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(salePricePerUnitTextView, activity.getString(R.string.saleprice_perunit_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(salePricePerUnitDataTextView, utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getSaleAmount())), 1, 10);
 
             saleTableRow = new TableRow(activity);
             saleTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            saleTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             saleTableRow.addView(salePricePerUnitTextView, 0);
             saleTableRow.addView(salePricePerUnitDataTextView, 1);
 
@@ -349,16 +386,17 @@ public class ReportGen {
             //Sale Price for all  Unit
             TextView salePriceTotalUnitsTextView = new TextView(activity);
             TextView salePriceTotalUnitsDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(salePriceTotalUnitsTextView, activity.getString(R.string.saleprice_costofunit_tablerow_textview), backGroundColorChange, 10, 1);
+            utils.setTextViewAttributes(salePriceTotalUnitsTextView, activity.getString(R.string.saleprice_costofunit_tablerow_textview), 10, 1);
             Double saleAmount = Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getSaleAmount()));
             Long numberOfUnits = Long.parseLong(utils.replaceComma(capitalGainCalcInputData.getNumberOfUnits()));
 
             saleCost = saleAmount * numberOfUnits;
 
-            utils.setTextViewAttributes(salePriceTotalUnitsDataTextView, utils.rupeeSymbol + utils.formatAmount(String.valueOf(saleCost)), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(salePriceTotalUnitsDataTextView, utils.rupeeSymbol + utils.formatAmount(String.valueOf(saleCost)), 1, 10);
 
             saleTableRow = new TableRow(activity);
             saleTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            saleTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             saleTableRow.addView(salePriceTotalUnitsTextView, 0);
             saleTableRow.addView(salePriceTotalUnitsDataTextView, 1);
 
@@ -367,13 +405,14 @@ public class ReportGen {
         else{
             TextView salePriceTextView = new TextView(activity);
             TextView salePriceDataTextView = new TextView(activity);
-            utils.setTextViewAttributes(salePriceTextView, activity.getString(R.string.purchaseprice_tablerow_textview), backGroundColorChange, 10, 1);
-            utils.setTextViewAttributes(salePriceDataTextView, utils.rupeeSymbol + capitalGainCalcInputData.getSaleAmount(), backGroundColorChange++, 1, 10);
+            utils.setTextViewAttributes(salePriceTextView, activity.getString(R.string.saleprice_tablerow_textview), 10, 1);
+            utils.setTextViewAttributes(salePriceDataTextView, utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getSaleAmount())), 1, 10);
 
             saleCost = Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getSaleAmount()));;
 
             saleTableRow = new TableRow(activity);
             saleTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            saleTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
             saleTableRow.addView(salePriceTextView, 0);
             saleTableRow.addView(salePriceDataTextView, 1);
 
@@ -384,11 +423,12 @@ public class ReportGen {
         saleExpenseProvided = isExpenseProvided(capitalGainCalcInputData.getSaleExpense());
         TextView saleExpenseTextView = new TextView(activity);
         TextView saleExpenseDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(saleExpenseTextView,activity.getString(R.string.sale_expense_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(saleExpenseDataTextView,saleExpenseProvided ? utils.rupeeSymbol + capitalGainCalcInputData.getSaleExpense() : activity.getString(R.string.not_applicable),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(saleExpenseTextView,activity.getString(R.string.sale_expense_textview),10, 1);
+        utils.setTextViewAttributes(saleExpenseDataTextView,saleExpenseProvided ? utils.rupeeSymbol + utils.formatAmount(utils.replaceComma(capitalGainCalcInputData.getSaleExpense())) : activity.getString(R.string.not_applicable),1, 10);
 
         saleTableRow = new TableRow(activity);
         saleTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        saleTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         saleTableRow.addView(saleExpenseTextView,0);
         saleTableRow.addView(saleExpenseDataTextView,1);
 
@@ -397,13 +437,14 @@ public class ReportGen {
         //Total Sale cost
         TextView saleTotalCostTextView = new TextView(activity);
         TextView saleTotalCostDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(saleTotalCostTextView,activity.getString(R.string.saleprice_total_tablerow_textview),backGroundColorChange,10, 1);
+        utils.setTextViewAttributes(saleTotalCostTextView,activity.getString(R.string.saleprice_total_tablerow_textview),10, 1);
         Double saleExpense = saleExpenseProvided ? Double.parseDouble(utils.replaceComma(capitalGainCalcInputData.getSaleExpense())) : new Double(0);
         capitalGainCalcDisplayData.setTotalSaleAmount(saleCost + saleExpense);
-        utils.setTextViewAttributes(saleTotalCostDataTextView,utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getTotalSaleAmount())),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(saleTotalCostDataTextView,utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getTotalSaleAmount())),1, 10);
 
         saleTableRow = new TableRow(activity);
         saleTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        saleTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         saleTableRow.addView(saleTotalCostTextView,0);
         saleTableRow.addView(saleTotalCostDataTextView,1);
 
@@ -419,19 +460,27 @@ public class ReportGen {
         TableRow capitalGainTableRow = new TableRow(activity);
 
         //perform all the computation here
-        if(activity instanceof MutualFundReport)
-            capitalGainCalcDisplayData = ((MutualFundReport)(activity)).calculateGainDetails(capitalGainCalcInputData, capitalGainCalcDisplayData);
+        if(activity instanceof MutualFundReport) {
+            capitalGainCalcDisplayData = ((MutualFundReport) (activity)).calculateGainDetails(capitalGainCalcInputData, capitalGainCalcDisplayData);
+        }
+        else if(activity instanceof GoldCalcReportActivity){
+            capitalGainCalcDisplayData = ((GoldCalcReportActivity) activity).calculateGainDetails(capitalGainCalcInputData, capitalGainCalcDisplayData);
+        }
+        else if(activity instanceof SharesCalcReportActivity){
+            capitalGainCalcDisplayData = ((SharesCalcReportActivity) activity).calculateGainDetails(capitalGainCalcInputData, capitalGainCalcDisplayData);
+        }
 
         //Create data rows
 
         //Duration of Time asset is held
         TextView durationHeldTextView = new TextView(activity);
         TextView durationHeldDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(durationHeldTextView,activity.getString(R.string.capitalgain_time_diff_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(durationHeldDataTextView,utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate()),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(durationHeldTextView,activity.getString(R.string.capitalgain_time_diff_textview),10, 1);
+        utils.setTextViewAttributes(durationHeldDataTextView,utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate()),1, 10);
 
         capitalGainTableRow = new TableRow(activity);
         capitalGainTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        capitalGainTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         capitalGainTableRow.addView(durationHeldTextView,0);
         capitalGainTableRow.addView(durationHeldDataTextView,1);
 
@@ -441,11 +490,12 @@ public class ReportGen {
         //Capital Gain Type
         TextView gainTypeTextView = new TextView(activity);
         TextView gainTypeDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(gainTypeTextView,activity.getString(R.string.capitalgain_type_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(gainTypeDataTextView,capitalGainCalcDisplayData.getGainTypeDisplayValue(),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(gainTypeTextView,activity.getString(R.string.capitalgain_type_textview),10, 1);
+        utils.setTextViewAttributes(gainTypeDataTextView,capitalGainCalcDisplayData.getGainTypeDisplayValue(),1, 10);
 
         capitalGainTableRow = new TableRow(activity);
         capitalGainTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        capitalGainTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         capitalGainTableRow.addView(gainTypeTextView,0);
         capitalGainTableRow.addView(gainTypeDataTextView,1);
 
@@ -455,11 +505,12 @@ public class ReportGen {
 
         TextView gainAmountTextView = new TextView(activity);
         TextView gainAmountDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(gainAmountTextView,capitalGainCalcDisplayData.getCapitalGainAmountTextView(),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(gainAmountDataTextView,capitalGainCalcDisplayData.getCapitalGainAmountDisplayValue(),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(gainAmountTextView,capitalGainCalcDisplayData.getCapitalGainAmountTextView(),10, 1);
+        utils.setTextViewAttributes(gainAmountDataTextView,capitalGainCalcDisplayData.getCapitalGainAmountDisplayValue(),1, 10);
 
         capitalGainTableRow = new TableRow(activity);
         capitalGainTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        capitalGainTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         capitalGainTableRow.addView(gainAmountTextView,0);
         capitalGainTableRow.addView(gainAmountDataTextView,1);
 
@@ -469,11 +520,12 @@ public class ReportGen {
 
         TextView gainTaxPercentTextView = new TextView(activity);
         TextView gainTaxPercentDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(gainTaxPercentTextView,activity.getString(R.string.capitalgain_tax_percent_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(gainTaxPercentDataTextView,capitalGainCalcDisplayData.getCapitalGainTaxPercentDisplayValue(),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(gainTaxPercentTextView,activity.getString(R.string.capitalgain_tax_percent_textview),10, 1);
+        utils.setTextViewAttributes(gainTaxPercentDataTextView,capitalGainCalcDisplayData.getCapitalGainTaxPercentDisplayValue(),1, 10);
 
         capitalGainTableRow = new TableRow(activity);
         capitalGainTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        capitalGainTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         capitalGainTableRow.addView(gainTaxPercentTextView,0);
         capitalGainTableRow.addView(gainTaxPercentDataTextView,1);
 
@@ -483,11 +535,12 @@ public class ReportGen {
 
         TextView gainTaxAmountTextView = new TextView(activity);
         TextView gainTaxAmountDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(gainTaxAmountTextView,activity.getString(R.string.capitalgain_tax_amount_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(gainTaxAmountDataTextView,capitalGainCalcDisplayData.getGetCapitalGainTaxAmountDisplayValue(),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(gainTaxAmountTextView,activity.getString(R.string.capitalgain_tax_amount_textview),10, 1);
+        utils.setTextViewAttributes(gainTaxAmountDataTextView,capitalGainCalcDisplayData.getGetCapitalGainTaxAmountDisplayValue(),1, 10);
 
         capitalGainTableRow = new TableRow(activity);
         capitalGainTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        capitalGainTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         capitalGainTableRow.addView(gainTaxAmountTextView,0);
         capitalGainTableRow.addView(gainTaxAmountDataTextView,1);
 
@@ -497,15 +550,48 @@ public class ReportGen {
 
         TextView netProfitTextView = new TextView(activity);
         TextView netProfitDataTextView = new TextView(activity);
-        utils.setTextViewAttributes(netProfitTextView,activity.getString(R.string.capitalgain_net_profit_textview),backGroundColorChange,10, 1);
-        utils.setTextViewAttributes(netProfitDataTextView,capitalGainCalcDisplayData.getNetProfitDisplayValue(),backGroundColorChange++,1, 10);
+        utils.setTextViewAttributes(netProfitTextView,activity.getString(R.string.capitalgain_net_profit_textview),10, 1);
+        utils.setTextViewAttributes(netProfitDataTextView,capitalGainCalcDisplayData.getNetProfitDisplayValue(),1, 10);
 
         capitalGainTableRow = new TableRow(activity);
         capitalGainTableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        capitalGainTableRow.setBackgroundColor(utils.getBackGroundColorForReport(backGroundColorChange++));
         capitalGainTableRow.addView(netProfitTextView,0);
         capitalGainTableRow.addView(netProfitDataTextView,1);
 
         tableLayout.addView(capitalGainTableRow,tableLayoutIndex++);
+    }
+
+    private void loadAdViewDetails(){
+        TableRow adViewTableRow = new TableRow(activity);
+        String adUnitID = "";
+
+        if(activity instanceof MutualFundReport) {
+            adUnitID = activity.getString(R.string.banner_ad_unit_id_mutual_fund_report_page);
+        }
+        else if(activity instanceof GoldCalcReportActivity){
+            adUnitID = activity.getString(R.string.banner_ad_unit_id_gold_calc_report_page);
+        }
+        else if(activity instanceof SharesCalcReportActivity){
+            adUnitID = activity.getString(R.string.banner_ad_unit_id_shares_calc_report_page);
+        }
+
+        LinearLayout adLayout = new LinearLayout(activity);
+        AdView reportAdView = new AdView(activity);
+        reportAdView.setAdSize(AdSize.BANNER);
+        reportAdView.setAdUnitId(adUnitID);
+        AdRequest adRequest = new AdRequest.Builder().setRequestAgent("android_studio:ad_template").build();
+        reportAdView.loadAd(adRequest);
+
+        LinearLayout.LayoutParams linearLayoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT,1.0f);
+        adLayout.addView(reportAdView,linearLayoutParams);
+
+        TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT,1.0f);
+        params.span = 2;
+        params.setMargins(10,10,10,0);
+        adViewTableRow.addView(adLayout,0, params);
+
+        tableLayout.addView(adViewTableRow,tableLayoutIndex++);
     }
 
     private void isNumberOfUnitsApplicable(){

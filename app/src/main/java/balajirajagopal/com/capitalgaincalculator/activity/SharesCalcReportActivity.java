@@ -30,7 +30,7 @@ public class SharesCalcReportActivity extends AppCompatActivity {
 
         intent = getIntent();
 
-        capitalGainCalcInputData = (CapitalGainCalcInputData) intent.getParcelableExtra(MutualFundsCalcActivity.MUTUAL_FUND_INPUT_DATA);
+        capitalGainCalcInputData = (CapitalGainCalcInputData) intent.getParcelableExtra(SharesCalcActivity.SHARES_INPUT_DATA);
         capitalGainCalcDisplayData = new CapitalGainCalcDisplayData();
         reportGen = new ReportGen(this,capitalGainCalcInputData, capitalGainCalcDisplayData);
         reportGen.generateReport();
@@ -47,8 +47,8 @@ public class SharesCalcReportActivity extends AppCompatActivity {
     public CapitalGainCalcDisplayData calculateGainDetails(CapitalGainCalcInputData capitalGainCalcInputData, CapitalGainCalcDisplayData capitalGainCalcDisplayData){
         Double taxPercent;
 
-        //Listed Shares
-        if(ASSET_SUBTYPE.SHARES_LISTED.equals(capitalGainCalcInputData.getAssetSubtype())){
+        //Unlisted Shares
+        if(ASSET_SUBTYPE.SHARES_UNLISTED.equals(capitalGainCalcInputData.getAssetSubtype())){
             utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate());
             //Short term computation
             if(utils.yearDiff < Integer.parseInt(getString(R.string.shares_shortterm_year))){
@@ -76,12 +76,12 @@ public class SharesCalcReportActivity extends AppCompatActivity {
                 capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - indexedPurchaseAmount);
                 capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.LONG_TERM_LOSS : GAINTYPE.LONG_TERM_GAIN);
                 if(GAINTYPE.LONG_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
-                    taxPercent = (double)Double.parseDouble(getString(R.string.mutual_fund_debt_long_term_percent))/(double)100;
+                    taxPercent = (double)Double.parseDouble(getString(R.string.shares_unlisted_long_term_percent))/(double)100;
                     capitalGainCalcDisplayData.setCapitalGainTaxAmount(capitalGainCalcDisplayData.getCapitalGainAmount() * taxPercent);
                     capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_gain_amount_textview));
                     capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_long_term_gain_textview));
                     capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount() - capitalGainCalcDisplayData.getCapitalGainTaxAmount());
-                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.mutual_fund_debt_long_term_percent) + "%");
+                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.shares_unlisted_long_term_percent) + "%");
                 }
                 else{
                     capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_long_term_loss_textview));
@@ -93,7 +93,7 @@ public class SharesCalcReportActivity extends AppCompatActivity {
                 capitalGainCalcDisplayData.setGetCapitalGainTaxAmountDisplayValue(utils.rupeeSymbol + utils.formatAmount(String.valueOf(capitalGainCalcDisplayData.getCapitalGainTaxAmount())));
             }
         }
-        //Unlisted shares
+        //Listed shares
         else{
             utils.calculateDifferenceInPurchaseAndSaleDate(capitalGainCalcInputData.getPurchaseDate(),capitalGainCalcInputData.getSaleDate());
             capitalGainCalcDisplayData.setCapitalGainAmount(capitalGainCalcDisplayData.getTotalSaleAmount() - capitalGainCalcDisplayData.getTotalPurchaseAmount());
@@ -101,11 +101,11 @@ public class SharesCalcReportActivity extends AppCompatActivity {
             if(utils.yearDiff < Integer.parseInt(getString(R.string.shares_shortterm_year))){
                 capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.SHORT_TERM_LOSS : GAINTYPE.SHORT_TERM_GAIN);
                 if(GAINTYPE.SHORT_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
-                    taxPercent = (double) Double.parseDouble(getString(R.string.mutual_fund_equity_short_term_percent))/ (double) 100;
+                    taxPercent = (double) Double.parseDouble(getString(R.string.shares_listed_short_term_percent))/ (double) 100;
                     capitalGainCalcDisplayData.setCapitalGainTaxAmount(capitalGainCalcDisplayData.getCapitalGainAmount() * taxPercent);
                     capitalGainCalcDisplayData.setGainTypeDisplayValue(getString(R.string.capitalgain_shot_term_gain_textview));
                     capitalGainCalcDisplayData.setCapitalGainAmountTextView(getString(R.string.capitalgain_gain_amount_textview));
-                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.mutual_fund_equity_short_term_percent) + "%");
+                    capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.shares_listed_short_term_percent) + "%");
                     capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount() - capitalGainCalcDisplayData.getCapitalGainTaxAmount());
                 }
                 else{
@@ -116,10 +116,11 @@ public class SharesCalcReportActivity extends AppCompatActivity {
             else{
                 capitalGainCalcDisplayData.setGaintype(capitalGainCalcDisplayData.getCapitalGainAmount() < 0 ? GAINTYPE.LONG_TERM_LOSS : GAINTYPE.LONG_TERM_GAIN);
                 if(GAINTYPE.LONG_TERM_GAIN.equals(capitalGainCalcDisplayData.getGaintype())){
-                    if(capitalGainCalcDisplayData.getCapitalGainAmount() > Double.parseDouble(getString(R.string.mutual_fund_equity_long_term_amount_limit))){
-                        taxPercent = (double) Double.parseDouble(getString(R.string.mutual_fund_equity_long_term_percent))/ (double) 100;
+                    if(capitalGainCalcDisplayData.getCapitalGainAmount() > Double.parseDouble(getString(R.string.shares_listed_long_term_amount_limit))){
+                        taxPercent = (double) Double.parseDouble(getString(R.string.shares_listed_long_term_percent))/ (double) 100;
                         capitalGainCalcDisplayData.setCapitalGainTaxAmount(capitalGainCalcDisplayData.getCapitalGainAmount() * taxPercent);
                         capitalGainCalcDisplayData.setNetProfit(capitalGainCalcDisplayData.getCapitalGainAmount() - capitalGainCalcDisplayData.getCapitalGainTaxAmount());
+                        capitalGainCalcDisplayData.setCapitalGainTaxPercentDisplayValue(getString(R.string.shares_listed_long_term_percent));
                     }
                     else{
                         capitalGainCalcDisplayData.setCapitalGainTaxAmount(new Double(0));

@@ -166,7 +166,7 @@ public class SharesCalcActivity extends AppCompatActivity {
     }
 
     public void enableFairMarketValueEditText(String purchaseDate){
-        RadioButton listedRadioButton = (RadioButton) findViewById(R.id.equityMutualFund);
+        RadioButton listedRadioButton = (RadioButton) findViewById(R.id.listedSharesRadioButton);
         EditText fairMarketValueEditText = (EditText) findViewById(R.id.fairMarketPriceEditText);
         TextView fairMarketValueTextView = (TextView) findViewById(R.id.fairMarketValueTextView);
         if(purchaseDate.length() != 0) {

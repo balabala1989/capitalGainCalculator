@@ -123,6 +123,12 @@ public class ReportGen {
         else if(ASSETTYPE.GOLD.equals(capitalGainCalcInputData.getAssettype())){
             dataStringResourceID = R.string.gold_assesttype_display_textview;
         }
+        else if(ASSETTYPE.SHARES.equals(capitalGainCalcInputData.getAssettype())){
+            if(ASSET_SUBTYPE.SHARES_LISTED.equals(capitalGainCalcInputData.getAssetSubtype()))
+                dataStringResourceID = R.string.listed_shares_assesttype_display_textview;
+            else
+                dataStringResourceID = R.string.unlisted_shares_assesttype_display_textview;
+        }
 
         utils.setTextViewAttributes(assetTypeDataTextView,activity.getString(dataStringResourceID),1, 10);
 

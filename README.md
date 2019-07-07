@@ -1,2 +1,2 @@
 # capitalGainCalculator
-App for Capital Gain Calculator
+Android App for Capital Gain Calculator
